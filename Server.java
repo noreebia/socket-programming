@@ -12,7 +12,7 @@ public class Server {
 			ServerSocket s=new ServerSocket(9090);
 			System.out.println("Server Running...");
 			Socket c=s.accept();
-			System.out.print("Connection established.");
+			System.out.print("Connection established.\n");
 			PrintWriter out = new PrintWriter(c.getOutputStream(),true);
 			BufferedReader in=new BufferedReader(new InputStreamReader(c.getInputStream()));
 			BufferedReader stdIn =new BufferedReader( new InputStreamReader(System.in));
@@ -23,8 +23,7 @@ public class Server {
 				System.out.println(in.readLine());
 			}
 		} catch (IOException e) {
-			System.out.println("Error");
-			e.printStackTrace();
+			System.out.println("Client has disconnected.");
 		}
 	}
 }
@@ -33,7 +32,7 @@ class ServerThread extends Thread
 {
 	PrintWriter out;
 	BufferedReader in;
-	BufferedReader stdIn;
+	BufferedReader stdIn;;
 	ServerThread(PrintWriter pw, BufferedReader br, BufferedReader br2)
 	{
 		this.out=pw;
@@ -45,7 +44,7 @@ class ServerThread extends Thread
 		try {
 			while(true)
 			{
-				out.println(stdIn.readLine() );	
+				out.println("Server:"+stdIn.readLine() );	
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
