@@ -18,7 +18,7 @@ public class ClientChatWindow extends javax.swing.JFrame {
     BufferedReader br;
     public ClientChatWindow(PrintWriter out, BufferedReader br) {
         initComponents();
-        jTextArea1.setEditable(true);
+        jTextArea1.setEditable(false);
         jTextField1.setText("");
         jButton1.setText("Send");
         jPanel1.getRootPane().setDefaultButton(jButton1);
