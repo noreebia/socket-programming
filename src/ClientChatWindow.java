@@ -24,7 +24,7 @@ public class ClientChatWindow extends javax.swing.JFrame {
         jPanel1.getRootPane().setDefaultButton(jButton1);
         this.out=out;
         this.br=br;
-        
+        this.setVisible(true);
     }
 
     /**
@@ -112,10 +112,7 @@ public class ClientChatWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
-    public void run() 
-    {
-        this.setVisible(true);
-    }
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package clientgui;
 
 /**
@@ -11,6 +16,7 @@ import java.util.*;
 public class Client {
 
         static ClientChatWindow ccw;
+        
 	public static void main(String[] args) {
 		try {
 			int i=0;
@@ -21,12 +27,22 @@ public class Client {
 			BufferedReader input=new BufferedReader(new InputStreamReader(c.getInputStream()));
 			BufferedReader stdIn =new BufferedReader( new InputStreamReader(System.in));
                         ccw=new ClientChatWindow(out, input);
-			ClientThread ct=new ClientThread(out,input,stdIn,ccw);
-			ct.start();
-                        ccw.run();
+                        run(input);
 		} catch (IOException  e) {
 			System.out.println("Server is not running.");
 		} 
+	}
+        
+        public static void run(BufferedReader input)
+	{
+		try {
+			while(true)
+			{
+                                ccw.jTextArea1.append(input.readLine()+"\n");
+			}			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
 
