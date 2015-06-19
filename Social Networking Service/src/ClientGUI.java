@@ -8,11 +8,9 @@ import java.net.Socket;
 
 public class ClientGUI extends javax.swing.JFrame {
 
-	DatabaseHandler dbHandler;
 	PrintWriter out;
 
 	public ClientGUI() {	
-		this.dbHandler =new DatabaseHandler();
 		initComponents();
 		this.setVisible(true);
 		jTextArea1.setEditable(false);
@@ -27,7 +25,7 @@ public class ClientGUI extends javax.swing.JFrame {
 			System.out.println("Connection established.");
 			out = new PrintWriter(c.getOutputStream(), true);
 			BufferedReader input = new BufferedReader(new InputStreamReader(c.getInputStream()));
-			ClientThread thread=new ClientThread(this.jTextArea1, this.dbHandler, input);
+			ClientThread thread=new ClientThread(this.jTextArea1, input);
 			thread.start();
 		} catch (IOException e) {
 			System.out.println("Server is not running.");
@@ -37,6 +35,10 @@ public class ClientGUI extends javax.swing.JFrame {
 
 	public void sendToServer(){
 		out.println("yo");
+	}
+	
+	public void sendToServer(String message){
+		out.println(message);
 	}
 
 	private void initComponents() {
@@ -120,8 +122,7 @@ public class ClientGUI extends javax.swing.JFrame {
 
 	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
 		String message= jTextField1.getText();
-		dbHandler.sendMessage(message);
-		sendToServer();
+		sendToServer(message);
 		jTextField1.setText("");
 	}                                        
 

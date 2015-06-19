@@ -5,6 +5,7 @@ import java.util.*;
 
 public class Server {
 
+	static DatabaseHandler dbHandler = new DatabaseHandler();
 	static ArrayList<ServerThread> threads=new ArrayList();
 	static ServerSocket s;
 
@@ -44,7 +45,8 @@ public class Server {
 				this.stdIn=new BufferedReader( new InputStreamReader(System.in));
 			} catch (IOException e) {
 				e.printStackTrace();
-			}
+			}interrupt();
+			out.println("InitEncode: "+ dbHandler.getChatroomContents());
 		}
 
 		public void run()
@@ -52,9 +54,15 @@ public class Server {
 			while(true)
 			{
 				try {
+					String chatroomContents;
 					String messageFromClient=in.readLine();
 					if(messageFromClient != null){
-						sendToAll();
+						dbHandler.updateChatroomContents(messageFromClient);
+						//System.out.println(messageFromClient);
+						chatroomContents=dbHandler.getChatroomContents();
+						//System.out.println(chatroomContents);
+						sendToAll(messageFromClient);
+
 					}
 				} catch (IOException e) {
 					//e.printStackTrace();
@@ -73,8 +81,8 @@ public class Server {
 			out.println("Server");	
 		}
 
-		public void send(String message){
-			out.println(message);
+		public void send(String message) throws IOException{
+			out.println(message);	
 		}
 
 		public void sendToAll(){
@@ -89,7 +97,11 @@ public class Server {
 
 		public void sendToAll(String message){
 			for(ServerThread thread:threads){
-				thread.send(message);
+				try {
+					thread.send(message);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

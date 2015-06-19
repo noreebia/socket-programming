@@ -10,13 +10,7 @@ public class DatabaseHandler {
 	static String connectionUser = "root";
 	static String connectionPassword = "951753";	
 
-	/*
-	public static void main(String[] args) {
-		
-		//getRegistrationNumber("newdoctor");
-		System.out.println(getChatroomContents());
-	}
-	*/
+	
 	public static int getRegistrationNumber(String name){
 		int i=0;
 		try{
@@ -41,13 +35,13 @@ public class DatabaseHandler {
 		return i;
 	}
 	
-	public static String getChatroomContents(){
+	public String getChatroomContents(){
 		String contents="";
 		try{
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			conn = DriverManager.getConnection(connectionUrl, connectionUser, connectionPassword);
 			stmt = conn.createStatement();			
-			rs=stmt.executeQuery("SELECT * FROM chatrooms WHERE chatroom_ID=1");
+			rs=stmt.executeQuery("SELECT * FROM chatrooms WHERE chatroom_ID= 1");
 			if(rs.next())
 			{
 				contents=rs.getString(2);
