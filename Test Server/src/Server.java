@@ -36,7 +36,7 @@ public class Server {
 
 		ServerThread(Socket socket)
 		{
-			System.out.println("Connection established");
+			System.out.println("Connection established. Thread number:"+threads.size());
 			this.socket=socket;
 			try {
 				this.out=new PrintWriter(socket.getOutputStream(),true);
@@ -73,6 +73,10 @@ public class Server {
 			out.println("Server");	
 		}
 
+		public void send(String message){
+			out.println(message);
+		}
+
 		public void sendToAll(){
 			for(ServerThread thread:threads){
 				try {
@@ -80,6 +84,12 @@ public class Server {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+			}
+		}
+
+		public void sendToAll(String message){
+			for(ServerThread thread:threads){
+				thread.send(message);
 			}
 		}
 	}

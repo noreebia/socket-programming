@@ -6,8 +6,6 @@ public class Client {
 
     public static void main(String[] args) {
         try {
-            int i = 0;
-            String cin;
             Socket c = new Socket("127.0.0.1", 9090);
             System.out.println("Connection established.");
             PrintWriter out = new PrintWriter(c.getOutputStream(), true);
@@ -23,12 +21,12 @@ public class Client {
     }
 
     public static void run(BufferedReader input) {
-        try {
-            while (true) {
-               System.out.println(input.readLine());
-            }
-        } catch (IOException e) {
-        	e.printStackTrace();
+        while(true){
+        	try {
+				System.out.println(input.readLine());
+			} catch (IOException e) {
+				break;
+			}
         }
     }
 }
