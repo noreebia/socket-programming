@@ -19,20 +19,11 @@ public class ClientThread extends Thread{
 				String processedMessage;
 				String messageFromServer = input.readLine();
 				if(messageFromServer != null){
-					if((messageFromServer.length() >= 11)){
-						processedMessage = messageFromServer.substring(0, 11);
-						System.out.println("processed message"+processedMessage);
-						if(processedMessage.equals("InitEncode:")){
-							System.out.println(messageFromServer);
-							textArea.setText(messageFromServer.substring(12)+"\n");
-						}
-						else{
-							System.out.println("Client view:" +messageFromServer);
-							textArea.append(messageFromServer + "\n");
-						}
+
+					if(messageFromServer.startsWith("InitEncode:")){
+						textArea.setText(messageFromServer.substring(12)+"\n");
 					}
 					else{
-						System.out.println("Client view:" +messageFromServer);
 						textArea.append(messageFromServer + "\n");
 					}
 				}
