@@ -21,6 +21,7 @@ public class Server {
 		while(true){
 			try {
 				threads.add(new ServerThread(s.accept()));
+				System.out.println("Connection established. Thread number:"+threads.size());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -30,6 +31,7 @@ public class Server {
 
 	public static class ServerThread extends Thread
 	{
+		String clientNickname;
 		Socket socket;
 		PrintWriter out;
 		BufferedReader in;
@@ -37,7 +39,6 @@ public class Server {
 
 		ServerThread(Socket socket)
 		{
-			System.out.println("Connection established. Thread number:"+threads.size());
 			this.socket=socket;
 			try {
 				this.out=new PrintWriter(socket.getOutputStream(),true);
@@ -57,15 +58,16 @@ public class Server {
 					String chatroomContents;
 					String messageFromClient=in.readLine();
 					if(messageFromClient != null){
-						dbHandler.updateChatroomContents(messageFromClient);
-						//System.out.println(messageFromClient);
-						chatroomContents=dbHandler.getChatroomContents();
-						//System.out.println(chatroomContents);
-						sendToAll(messageFromClient);
-
+						if(messageFromClient.startsWith("mynicknameis:")){
+							setClientNickname(messageFromClient.split(":", 2)[1]); 
+						}
+						else{
+							dbHandler.updateChatroomContents(this.clientNickname+":"+messageFromClient);
+							chatroomContents=dbHandler.getChatroomContents();
+							sendToAll(messageFromClient);
+						}
 					}
 				} catch (IOException e) {
-					//e.printStackTrace();
 					System.out.println("Client has disconnected");
 					if(threads.remove(this)){
 						System.out.println("Thread removed");
@@ -82,7 +84,7 @@ public class Server {
 		}
 
 		public void send(String message) throws IOException{
-			out.println(message);	
+			out.println(this.clientNickname + ":" + message);	
 		}
 
 		public void sendToAll(){
@@ -103,6 +105,10 @@ public class Server {
 					e.printStackTrace();
 				}
 			}
+		}
+
+		public void setClientNickname(String nickname){
+			this.clientNickname= nickname;
 		}
 	}
 }
