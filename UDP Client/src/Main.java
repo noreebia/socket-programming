@@ -10,6 +10,7 @@ public class Main {
 	
 	public static void main(String[] args) throws IOException {
 		Data data = new Data();
+		data.displayContents();
 		
 		try {
 			socket = new DatagramSocket();
@@ -17,9 +18,7 @@ public class Main {
 			e.printStackTrace();
 		}
 		
-		byte buf[] = new byte[1024];
-		String message = "Hello";
-		buf = message.getBytes();
+		byte buf[] = new byte[8192];
 		
 		try {
 			serverAddress = InetAddress.getByName("localhost");
@@ -27,12 +26,9 @@ public class Main {
 			e.printStackTrace();
 		}		
 		
-		ArrayList<Integer> array = new ArrayList<Integer>();
-		array.add(1);
-		array.add(2);
 		ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
 		ObjectOutputStream outputStream = new ObjectOutputStream(byteOutputStream);
-		outputStream.writeObject(array);
+		outputStream.writeObject(data);
 		buf = byteOutputStream.toByteArray();
 		
 		DatagramPacket packet = new DatagramPacket(buf, buf.length, serverAddress, 50000);
