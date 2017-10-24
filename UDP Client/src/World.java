@@ -6,6 +6,9 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import processing.core.PApplet;
 
@@ -24,6 +27,8 @@ public class World extends PApplet{
 	int pos[] = new int[2];
 	byte buf[] = new byte[8192];
 	
+	ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
+	
 	public World() {
 		System.out.println("initializing world");
 		pos[0] = 600;
@@ -35,6 +40,7 @@ public class World extends PApplet{
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
+		
 		
 		packet = new DatagramPacket(buf, buf.length, serverAddress, 50000);
 		try {
@@ -50,23 +56,10 @@ public class World extends PApplet{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		/*
-		System.out.println("Received packet");
-		bais = new ByteArrayInputStream(packet.getData());
-		try {
-			is = new ObjectInputStream(bais);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		try {
-			pos = (int[])is.readObject();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		System.out.println(pos[0] + ", " + pos[1]);
-		*/
+		
+		
+		InputThread thread = new InputThread(socket, pos, bais, is, buf);
+		ses.scheduleWithFixedDelay(thread, 0, 16, TimeUnit.MILLISECONDS);
 	}
 	
 	public void settings() {
@@ -78,6 +71,7 @@ public class World extends PApplet{
 	}
 	
 	public void draw() {
+		/*
 		packet = new DatagramPacket(buf,buf.length);
 		try {
 			socket.receive(packet);
@@ -103,12 +97,22 @@ public class World extends PApplet{
 		try {
 			is.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println(pos[0] + ", " + pos[1]);
-
+		*/
+		
 		background(255);
+		System.out.println(pos[0] + ", " + pos[1]);
 		ellipse(pos[0],pos[1],20,20);
+		
+		if(millis() >= 10000) {
+			ses.shutdown();
+			while(!ses.isShutdown()) {
+				
+			}
+			exit();
+		}
+		
 	}
 }

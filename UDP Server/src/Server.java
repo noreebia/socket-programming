@@ -89,7 +89,7 @@ public class Server {
 
 			System.out.println("Sent");
 			try {
-				Thread.sleep(1);
+				Thread.sleep(16);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
