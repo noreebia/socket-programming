@@ -7,23 +7,20 @@ import java.net.DatagramSocket;
 public class InputThread implements Runnable{
 
 	int[] pos, temp;
+	byte[] buf = new byte[8192];
+
 	DatagramPacket packet;
 	DatagramSocket socket;
 	ByteArrayInputStream bais;
 	ObjectInputStream is;
-	byte[] buf;
 	
-	public InputThread(DatagramSocket socket, int[] pos, ByteArrayInputStream bais, ObjectInputStream is, byte[] buf) {
+	public InputThread(DatagramSocket socket, int[] pos) {
 		System.out.println("Input handler created.");
 		this.socket = socket;
 		this.pos = pos;
-		this.bais = bais;
-		this.is = is;
-		this.buf = buf;
 	}
 	
 	public void run() {
-		
 		System.out.println("Receiving");
 		packet = new DatagramPacket(buf,buf.length);
 		try {

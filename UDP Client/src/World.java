@@ -16,13 +16,7 @@ public class World extends PApplet{
  	InetAddress serverAddress;
 	DatagramSocket socket;
 	DatagramPacket packet;
-	
-	ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	ObjectOutputStream os;
-	
-	ByteArrayInputStream bais;
-	ObjectInputStream is;
-	
+			
 	int x,y;
 	int pos[] = new int[2];
 	byte buf[] = new byte[8192];
@@ -36,13 +30,11 @@ public class World extends PApplet{
 		try {
 			serverAddress = InetAddress.getByName("localhost");
 			socket = new DatagramSocket();
-			os = new ObjectOutputStream(baos);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
-		
-		
 		packet = new DatagramPacket(buf, buf.length, serverAddress, 50000);
+		
 		try {
 			socket.send(packet);
 		} catch (IOException e) {
@@ -58,7 +50,7 @@ public class World extends PApplet{
 		}
 		
 		
-		InputThread thread = new InputThread(socket, pos, bais, is, buf);
+		InputThread thread = new InputThread(socket, pos);
 		ses.scheduleWithFixedDelay(thread, 0, 16, TimeUnit.MILLISECONDS);
 	}
 	
@@ -71,37 +63,6 @@ public class World extends PApplet{
 	}
 	
 	public void draw() {
-		/*
-		packet = new DatagramPacket(buf,buf.length);
-		try {
-			socket.receive(packet);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		System.out.println("Received packet");
-		bais = new ByteArrayInputStream(packet.getData());
-		
-		try {
-			is = new ObjectInputStream(bais);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		try {
-			pos = (int[])is.readObject();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		try {
-			is.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		System.out.println(pos[0] + ", " + pos[1]);
-		*/
-		
 		background(255);
 		System.out.println(pos[0] + ", " + pos[1]);
 		ellipse(pos[0],pos[1],20,20);
