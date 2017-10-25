@@ -39,59 +39,25 @@ public class OutputHandlingThread implements Runnable {
 	}
 
 	public void run() {
-		while(true) {
-			System.out.println("Sending");
-			
-			try {
-				baos.reset();
-				os = new ObjectOutputStream(baos);
-				os.writeObject(player);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			buf = baos.toByteArray();
-
-			packet = new DatagramPacket(buf, buf.length, serverAddress, serverPort);
-
-			try {
-				socket.send(packet);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			System.out.println("Sent");
-
-			try {
-				Thread.sleep(16);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			
-		}
-
-		/*
-		System.out.println("Received packet");
-		bais = new ByteArrayInputStream(packet.getData());
-
+		System.out.println("Sending");
+		
 		try {
-			is = new ObjectInputStream(bais);
+			baos.reset();
+			os = new ObjectOutputStream(baos);
+			os.writeObject(player);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		buf = baos.toByteArray();
+
+		packet = new DatagramPacket(buf, buf.length, serverAddress, serverPort);
+
 		try {
-			temp = (int[]) is.readObject();
-			System.arraycopy(temp, 0, pos, 0, temp.length);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			socket.send(packet);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		try {
-			is.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		System.out.println(pos[0] + ", " + pos[1]);
-		*/
+
+		System.out.println("Sent");
 	}
 }

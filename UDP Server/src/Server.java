@@ -4,7 +4,7 @@ import java.io.ObjectInputStream;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.util.*;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 import model.*;
 
@@ -36,6 +36,9 @@ public class Server {
 	
 	int connectionCount=0;
 	
+	ExecutorService executor = Executors.newCachedThreadPool();
+	ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
+	
 	public Server() {
 		try {
 			os = new ObjectOutputStream(baos);
@@ -50,11 +53,8 @@ public class Server {
 			e1.printStackTrace();
 		}
 		
-		inputHandler = new Thread(new InputHandlingThread(ioSocket, data));
-		outputHandler = new Thread(new OutputHandlingThread(ioSocket, data, clients));
-
-		inputHandler.start();
-		outputHandler.start();
+		executor.execute(new InputHandlingThread(ioSocket, data));
+		ses.scheduleWithFixedDelay(new OutputHandlingThread(ioSocket, data, clients), 0, 8, TimeUnit.MILLISECONDS);
 	}
 
 	public void run() {
@@ -91,27 +91,6 @@ public class Server {
 		return bb.array();
 	}
 
-	
-	
-	/*
-	public void run() {
-		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		
-		inputHandler.interrupt();
-		outputHandler.interrupt();
-		
-		while (true) {
-			if(inputHandler.isInterrupted() || outputHandler.isInterrupted()) {
-				break;
-			}
-		}
-		System.out.println("Exited");
-	}
-	 */
 	public void addClient(int id, InetAddress clientAddress, int clientPort) {
 		clients.add(new Client(id, clientAddress, clientPort));
 	}

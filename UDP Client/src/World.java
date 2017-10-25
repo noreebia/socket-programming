@@ -7,6 +7,7 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -30,7 +31,9 @@ public class World extends PApplet{
 	Data data = new Data();
 	
 	int connectionID;
-	//ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
+	
+	ExecutorService executor = Executors.newCachedThreadPool();
+	ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
 	
 	public World() {
 		System.out.println("initializing world");
@@ -61,15 +64,9 @@ public class World extends PApplet{
 		connectionID = byteArrayToInt(packet.getData());
 		player.setID(connectionID);
 		System.out.println("My ID: " + connectionID);
-		/*
-		InputHandlingThread thread = new InputHandlingThread(socket, pos);
-		ses.scheduleWithFixedDelay(thread, 0, 16, TimeUnit.MILLISECONDS);
-		*/
-		Thread inputHandler = new Thread(new InputHandlingThread(socket, data));
-		Thread outputHandler = new Thread(new OutputHandlingThread(socket, serverAddress, 50001, player));
 		
-		inputHandler.start();
-		outputHandler.start();
+		executor.execute(new InputHandlingThread(socket, data));
+		ses.scheduleWithFixedDelay(new OutputHandlingThread(socket, serverAddress, 50001, player), 0, 8, TimeUnit.MILLISECONDS);
 	}
 	
 	public int byteArrayToInt(byte[] b) {
@@ -90,23 +87,7 @@ public class World extends PApplet{
 		
 		user.run();
 		player.cloneInfoOf(user);
-		//System.out.println("User x,y:" + user.getX() + ", " + user.getY());
-		//System.out.println("Player x,y:" + player.getX() + ", " + player.getY());
 		displayGameObjectData();
-		
-		/*
-		System.out.println(pos[0] + ", " + pos[1]);
-		ellipse(pos[0],pos[1],20,20);
-		
-		
-		if(millis() >= 10000) {
-			ses.shutdown();
-			while(!ses.isShutdown()) {
-				
-			}
-			exit();
-		}
-		*/
 	}
 	
 	public void displayGameObjectData() {
@@ -114,7 +95,9 @@ public class World extends PApplet{
 			if(p.getID()!= connectionID) {
 				ellipse(p.getX(), p.getY(), 2 * p.getSize(), 2* p.getSize());
 			}
-			System.out.println("player id: " + p.getID() + "x: " + p.getX() + "y: " + p.getY());
+			else {
+				ellipse(p.getX(), p.getY(), 5, 5);
+			}
 		}
 	}
 	

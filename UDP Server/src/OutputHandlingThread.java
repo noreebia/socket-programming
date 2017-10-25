@@ -32,32 +32,24 @@ public class OutputHandlingThread implements Runnable{
 	}
 
 	public void run() {
-		while(true) {
+		try {
+			baos.reset();
+			os = new ObjectOutputStream(baos);
+			os.writeObject(data);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		buf = baos.toByteArray();
+	
+
+		for(Client c:clients) {
+			packet = new DatagramPacket(buf, buf.length, c.getAddress(), c.getPort());
 			try {
-				baos.reset();
-				os = new ObjectOutputStream(baos);
-				os.writeObject(data);
+				ioSocket.send(packet);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			buf = baos.toByteArray();
-
-			for(Client c:clients) {
-				packet = new DatagramPacket(buf, buf.length, c.getAddress(), c.getPort());
-				try {
-					ioSocket.send(packet);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				System.out.println("Sent to:" + c.getAddress().toString());
-			}
-			
-			try {
-				Thread.sleep(16);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-				return;
-			}	
+			System.out.println("Sent to:" + c.getAddress().toString());
 		}
 	}
 	
