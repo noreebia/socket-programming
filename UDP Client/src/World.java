@@ -6,6 +6,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.nio.ByteBuffer;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -28,11 +29,10 @@ public class World extends PApplet{
 	
 	Data data = new Data();
 	
-	
+	int connectionID;
 	//ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
 	
 	public World() {
-		player.setID(1);
 		System.out.println("initializing world");
 		try {
 			serverAddress = InetAddress.getByName("localhost");
@@ -57,6 +57,10 @@ public class World extends PApplet{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		connectionID = byteArrayToInt(packet.getData());
+		player.setID(connectionID);
+		System.out.println("My ID: " + connectionID);
 		/*
 		InputHandlingThread thread = new InputHandlingThread(socket, pos);
 		ses.scheduleWithFixedDelay(thread, 0, 16, TimeUnit.MILLISECONDS);
@@ -66,7 +70,11 @@ public class World extends PApplet{
 		
 		inputHandler.start();
 		outputHandler.start();
-
+	}
+	
+	public int byteArrayToInt(byte[] b) {
+		ByteBuffer bb = ByteBuffer.wrap(b);
+		return bb.getInt();
 	}
 	
 	public void settings() {
@@ -103,6 +111,9 @@ public class World extends PApplet{
 	
 	public void displayGameObjectData() {
 		for(Player p: data.getPlayers()) {
+			if(p.getID()!= connectionID) {
+				ellipse(p.getX(), p.getY(), p.getSize(), p.getSize());
+			}
 			System.out.println("player id: " + p.getID() + "x: " + p.getX() + "y: " + p.getY());
 		}
 	}

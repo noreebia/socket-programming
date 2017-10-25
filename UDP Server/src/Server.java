@@ -2,6 +2,7 @@ import java.io.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.*;
+import java.nio.ByteBuffer;
 import java.util.*;
 
 import model.*;
@@ -23,7 +24,7 @@ public class Server {
 
 	Random rand = new Random();
 
-	int pos[] = { 1000, 700 };
+	int pos[] = {1000, 700};
 
 	Data data = new Data();
 
@@ -31,6 +32,8 @@ public class Server {
 	Thread outputHandler;
 
 	ArrayList<Client> clients = new ArrayList<Client>();
+	
+	int connectionCount=0;
 
 	public Server() {
 		try {
@@ -58,13 +61,29 @@ public class Server {
 		clientAddress = packet.getAddress();
 		clientPort = packet.getPort();
 
-		addClient(clientAddress, clientPort);
+		connectionCount++;
+		buf = intToByteArray(connectionCount);
+		
+		packet = new DatagramPacket(buf, buf.length, clientAddress, clientPort);
+		try {
+			listeningSocket.send(packet);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		addClient(connectionCount, clientAddress, clientPort);
 		
 		inputHandler = new Thread(new InputHandlingThread(ioSocket, data));
 		outputHandler = new Thread(new OutputHandlingThread(ioSocket, data, clients));
 
 		inputHandler.start();
 		outputHandler.start();
+	}
+	
+	public byte[] intToByteArray(int i){
+		ByteBuffer bb = ByteBuffer.allocate(4);
+		bb.putInt(i);
+		return bb.array();
 	}
 
 	public void run() {
@@ -85,9 +104,8 @@ public class Server {
 		System.out.println("Exited");
 	}
 
-	public void addClient(InetAddress clientAddress, int clientPort) {
-		clients.add(new Client(clientAddress, clientPort));
-		clients.get(clients.size() - 1).setID(clients.size());
+	public void addClient(int id, InetAddress clientAddress, int clientPort) {
+		clients.add(new Client(id, clientAddress, clientPort));
 	}
 
 }
