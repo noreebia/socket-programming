@@ -56,12 +56,6 @@ public class InputHandlingThread implements Runnable{
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
-			try {
-				Thread.sleep(16);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 		}
 	}	
 }

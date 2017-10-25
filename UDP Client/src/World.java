@@ -112,7 +112,7 @@ public class World extends PApplet{
 	public void displayGameObjectData() {
 		for(Player p: data.getPlayers()) {
 			if(p.getID()!= connectionID) {
-				ellipse(p.getX(), p.getY(), p.getSize(), p.getSize());
+				ellipse(p.getX(), p.getY(), 2 * p.getSize(), 2* p.getSize());
 			}
 			System.out.println("player id: " + p.getID() + "x: " + p.getX() + "y: " + p.getY());
 		}
