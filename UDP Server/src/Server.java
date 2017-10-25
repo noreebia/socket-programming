@@ -4,8 +4,11 @@ import java.io.ObjectInputStream;
 import java.net.*;
 import java.util.*;
 
+import model.*;
+
 public class Server {
-	DatagramSocket socket;
+	DatagramSocket listeningSocket;
+	DatagramSocket ioSocket;
 	byte[] buf = new byte[8192];
 	InetAddress clientAddress;
 	int clientPort;
@@ -20,7 +23,14 @@ public class Server {
 
 	Random rand = new Random();
 
-	int pos[] = {1000, 700};
+	int pos[] = { 1000, 700 };
+
+	Data data = new Data();
+
+	Thread inputHandler;
+	Thread outputHandler;
+
+	ArrayList<Client> clients = new ArrayList<Client>();
 
 	public Server() {
 		try {
@@ -28,11 +38,10 @@ public class Server {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
 
-	public void run() {
 		try {
-			socket = new DatagramSocket(50000);
+			listeningSocket = new DatagramSocket(50000);
+			ioSocket = new DatagramSocket(50001);
 		} catch (SocketException e1) {
 			e1.printStackTrace();
 		}
@@ -40,7 +49,7 @@ public class Server {
 
 		System.out.println("listening...");
 		try {
-			socket.receive(packet);
+			listeningSocket.receive(packet);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -49,51 +58,36 @@ public class Server {
 		clientAddress = packet.getAddress();
 		clientPort = packet.getPort();
 
-		/*
-		 * try { os.writeObject(pos); } catch (IOException e) { e.printStackTrace(); }
-		 * buf = baos.toByteArray();
-		 * 
-		 * packet = new DatagramPacket(buf, buf.length, clientAddress, clientPort);
-		 * 
-		 * try { socket.send(packet); } catch (IOException e) { e.printStackTrace(); }
-		 * System.out.println("Sent");
-		 */
+		addClient(clientAddress, clientPort);
+		
+		inputHandler = new Thread(new InputHandlingThread(ioSocket, data));
+		outputHandler = new Thread(new OutputHandlingThread(ioSocket, data, clients));
+
+		inputHandler.start();
+		outputHandler.start();
+	}
+
+	public void run() {
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		inputHandler.interrupt();
+		outputHandler.interrupt();
+		
 		while (true) {
-			//pos[0] = rand.nextInt(1200) + 1;
-			//pos[1] = rand.nextInt(800) + 1;
-			pos[0]--;
-			pos[1]--;
-			if(pos[0] < 0 ) {
-				pos[0] = 1200;
-			}
-			if(pos[1] < 0) {
-				pos[1] = 800;
-			}
-			System.out.println(pos[0] + ", " + pos[1]);
-			try {
-				//baos = new ByteArrayOutputStream();
-				baos.reset();
-				os = new ObjectOutputStream(baos);
-				os.writeObject(pos);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			buf = baos.toByteArray();
-
-			packet = new DatagramPacket(buf, buf.length, clientAddress, clientPort);
-
-			try {
-				socket.send(packet);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			System.out.println("Sent");
-			try {
-				Thread.sleep(16);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			if(inputHandler.isInterrupted() || outputHandler.isInterrupted()) {
+				break;
 			}
 		}
+		System.out.println("Exited");
 	}
+
+	public void addClient(InetAddress clientAddress, int clientPort) {
+		clients.add(new Client(clientAddress, clientPort));
+		clients.get(clients.size() - 1).setID(clients.size());
+	}
+
 }
