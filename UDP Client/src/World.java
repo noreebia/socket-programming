@@ -49,7 +49,6 @@ public class World extends PApplet{
 			e.printStackTrace();
 		}
 		
-		
 		InputThread thread = new InputThread(socket, pos);
 		ses.scheduleWithFixedDelay(thread, 0, 16, TimeUnit.MILLISECONDS);
 	}
@@ -74,6 +73,5 @@ public class World extends PApplet{
 			}
 			exit();
 		}
-		
 	}
 }

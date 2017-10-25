@@ -71,7 +71,8 @@ public class Server {
 			}
 			System.out.println(pos[0] + ", " + pos[1]);
 			try {
-				baos = new ByteArrayOutputStream();
+				//baos = new ByteArrayOutputStream();
+				baos.reset();
 				os = new ObjectOutputStream(baos);
 				os.writeObject(pos);
 			} catch (IOException e) {
