@@ -48,36 +48,40 @@ public class Server {
 		} catch (SocketException e1) {
 			e1.printStackTrace();
 		}
-		packet = new DatagramPacket(buf, buf.length);
-
-		System.out.println("listening...");
-		try {
-			listeningSocket.receive(packet);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		System.out.println("received packet from client");
-
-		clientAddress = packet.getAddress();
-		clientPort = packet.getPort();
-
-		connectionCount++;
-		buf = intToByteArray(connectionCount);
-		
-		packet = new DatagramPacket(buf, buf.length, clientAddress, clientPort);
-		try {
-			listeningSocket.send(packet);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		addClient(connectionCount, clientAddress, clientPort);
 		
 		inputHandler = new Thread(new InputHandlingThread(ioSocket, data));
 		outputHandler = new Thread(new OutputHandlingThread(ioSocket, data, clients));
 
 		inputHandler.start();
 		outputHandler.start();
+	}
+
+	public void run() {
+		while(true) {
+			packet = new DatagramPacket(buf, buf.length);
+
+			System.out.println("listening...");
+			try {
+				listeningSocket.receive(packet);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			System.out.println("received packet from client");
+
+			clientAddress = packet.getAddress();
+			clientPort = packet.getPort();
+
+			connectionCount++;
+			buf = intToByteArray(connectionCount);
+			
+			packet = new DatagramPacket(buf, buf.length, clientAddress, clientPort);
+			try {
+				listeningSocket.send(packet);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			addClient(connectionCount, clientAddress, clientPort);
+		}
 	}
 	
 	public byte[] intToByteArray(int i){
@@ -86,6 +90,9 @@ public class Server {
 		return bb.array();
 	}
 
+	
+	
+	/*
 	public void run() {
 		try {
 			Thread.sleep(10000);
@@ -103,7 +110,7 @@ public class Server {
 		}
 		System.out.println("Exited");
 	}
-
+	 */
 	public void addClient(int id, InetAddress clientAddress, int clientPort) {
 		clients.add(new Client(id, clientAddress, clientPort));
 	}

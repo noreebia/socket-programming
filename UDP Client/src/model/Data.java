@@ -19,6 +19,7 @@ public class Data implements Serializable{
 				return;
 			}
 		}
+		addPlayer(player);
 	}
 	
 	public void randomizePlayerPositions() {
