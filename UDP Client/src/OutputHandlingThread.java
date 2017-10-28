@@ -40,23 +40,28 @@ public class OutputHandlingThread implements Runnable {
 
 	public void run() {		
 		try {
-			baos.reset();
-			os = new ObjectOutputStream(baos);
-			os.writeObject(player);
-		} catch (IOException e) {
+			try {
+				baos.reset();
+				os = new ObjectOutputStream(baos);
+				os.writeObject(player);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			buf = baos.toByteArray();
+
+			packet = new DatagramPacket(buf, buf.length, serverAddress, serverPort);
+			System.out.println("Length of sent data in bytes: " + buf.length);
+
+			try {
+				socket.send(packet);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			System.out.println("Sent");
+
+		}catch(Exception e){
 			e.printStackTrace();
 		}
-		buf = baos.toByteArray();
-
-		packet = new DatagramPacket(buf, buf.length, serverAddress, serverPort);
-		System.out.println("Length of sent data in bytes: " + buf.length);
-
-		try {
-			socket.send(packet);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		System.out.println("Sent");
 	}
 }
