@@ -4,6 +4,7 @@ import java.io.ObjectInputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
+import control.DataController;
 import model.Data;
 
 public class InputHandlingThread implements Runnable{
@@ -16,12 +17,13 @@ public class InputHandlingThread implements Runnable{
 	ByteArrayInputStream bais;
 	ObjectInputStream is;
 	
-	Data data, temp;
+	Data temp;
+	DataController dataController;
 	
-	public InputHandlingThread(DatagramSocket socket, Data data) {
+	public InputHandlingThread(DatagramSocket socket, DataController dataController) {
 		System.out.println("Input handler created.");
 		this.socket = socket;
-		this.data = data;
+		this.dataController = dataController;
 	}
 	
 	public void run() {
@@ -43,7 +45,7 @@ public class InputHandlingThread implements Runnable{
 			}
 			try {
 				temp = (Data)is.readObject();
-				data.clone(temp);
+				dataController.cloneData(temp);
 				System.out.println("data received and cloned");
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();

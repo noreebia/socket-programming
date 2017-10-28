@@ -5,9 +5,10 @@ import java.util.*;
 
 public class Data implements Serializable{
 	
-	ArrayList<Player> players = new ArrayList<Player>();
+	public ArrayList<Player> players = new ArrayList<Player>();
 	Random rand = new Random();
 	
+	/*
 	public void addPlayer(Player player) {
 		players.add(player);
 	}
@@ -27,12 +28,8 @@ public class Data implements Serializable{
 			p.setXY(rand.nextInt(1200) + 1, rand.nextInt(800) + 1);
 		}
 	}
-	
+	*/
 	public ArrayList<Player> getPlayers(){
 		return players;
-	}
-	
-	public void clone(Data data) {
-		this.players = data.players;
 	}
 }

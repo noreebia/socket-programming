@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.*;
 
+import control.DataController;
 import model.*;
 
 public class InputHandlingThread implements Runnable{
@@ -11,15 +12,15 @@ public class InputHandlingThread implements Runnable{
 	DatagramPacket packet;
 	byte[] buf = new byte[8192];
 	Player temp;
-	Data data;
+	DataController dataController;
 	
 	ByteArrayInputStream bais;
 	ObjectInputStream is;
 
-	public InputHandlingThread(DatagramSocket ioSocket, Data data) {
+	public InputHandlingThread(DatagramSocket ioSocket, DataController dataController) {
 		System.out.println("Input handler created.");
 		this.ioSocket = ioSocket;
-		this.data = data;
+		this.dataController = dataController;
 	}
 	
 	public void run() {
@@ -41,10 +42,10 @@ public class InputHandlingThread implements Runnable{
 				e.printStackTrace();
 			}
 			System.out.println("attempting to update data");
-			System.out.println("current num of players: " + data.getPlayers().size());
+			System.out.println("current num of players: " + dataController.getPlayers().size());
 			try {
 				temp = (Player)is.readObject();
-				data.updatePlayer(temp);
+				dataController.updatePlayer(temp);
 				System.out.println("received player object from client and data updated");
 				System.out.println("number of player bullets: " + temp.getBullets().size());
 			} catch (ClassNotFoundException e) {

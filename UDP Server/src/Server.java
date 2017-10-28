@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
 import java.util.*;
 import java.util.concurrent.*;
 
+import control.DataController;
 import model.*;
 
 public class Server {
@@ -26,6 +27,8 @@ public class Server {
 	Random rand = new Random();
 
 	Data data = new Data();
+	
+	DataController dataController = new DataController(data);
 
 	Thread inputHandler;
 	Thread outputHandler;
@@ -54,7 +57,7 @@ public class Server {
 			e1.printStackTrace();
 		}
 		
-		executor.execute(new InputHandlingThread(ioSocket, data));
+		executor.execute(new InputHandlingThread(ioSocket, dataController));
 		ses.scheduleAtFixedRate(new OutputHandlingThread(ioSocket, data, clients), 0, 8, TimeUnit.MILLISECONDS);
 	}
 

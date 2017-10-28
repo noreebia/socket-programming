@@ -13,6 +13,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import client_exclusive.User;
+import control.DataController;
 import model.*;
 import processing.core.PApplet;
 
@@ -30,6 +31,8 @@ public class World extends PApplet{
 	Player player = new Player();
 	
 	Data data = new Data();
+	
+	DataController dataController = new DataController(data);
 	
 	int connectionID;
 	
@@ -69,7 +72,7 @@ public class World extends PApplet{
 		player.setID(connectionID);
 		System.out.println("My ID: " + connectionID);
 		
-		executor.execute(new InputHandlingThread(socket, data));
+		executor.execute(new InputHandlingThread(socket, dataController));
 		//ses.scheduleWithFixedDelay(new OutputHandlingThread(socket, serverAddress, 50001, player), 0, 8, TimeUnit.MILLISECONDS);
 		ses.scheduleAtFixedRate(new OutputHandlingThread(socket, serverAddress, 50001, player), 0, 8, TimeUnit.MILLISECONDS);
 	}
