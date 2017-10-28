@@ -4,6 +4,7 @@ import java.io.ObjectOutputStream;
 import java.net.*;
 import java.util.ArrayList;
 
+import control.DataController;
 import model.*;
 
 public class OutputHandlingThread implements Runnable{
@@ -15,10 +16,10 @@ public class OutputHandlingThread implements Runnable{
 	DatagramSocket ioSocket;
 	DatagramPacket packet;
 	
-	Data data;
+	DataController dataController;
 	ArrayList<Client> clients = new ArrayList<Client>();
 	
-	public OutputHandlingThread(DatagramSocket ioSocket, Data data, ArrayList<Client> clients) {
+	public OutputHandlingThread(DatagramSocket ioSocket, DataController dataController, ArrayList<Client> clients) {
 		System.out.println("OutputHandlingThread created");
 		this.ioSocket = ioSocket;
 		try {
@@ -28,14 +29,14 @@ public class OutputHandlingThread implements Runnable{
 		}
 				
 		this.clients = clients;
-		this.data= data;
+		this.dataController = dataController;
 	}
 
 	public void run() {
 		try {
 			baos.reset();
 			os = new ObjectOutputStream(baos);
-			os.writeObject(data);
+			os.writeObject(dataController.getData());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -53,6 +54,4 @@ public class OutputHandlingThread implements Runnable{
 		}
 		System.out.println("Length of sent data in byte: " + buf.length);
 	}
-	
-
 }

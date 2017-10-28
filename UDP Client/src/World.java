@@ -29,10 +29,8 @@ public class World extends PApplet{
 	
 	User user = new User(this);
 	Player player = new Player(user.getBullets());
-	
-	Data data = new Data();
-	
-	DataController dataController = new DataController(data);
+		
+	DataController dataController = new DataController();
 	
 	int connectionID;
 	
@@ -99,7 +97,7 @@ public class World extends PApplet{
 	}
 	
 	public void displayGameObjectData() {
-		for(Player p: data.getPlayers()) {
+		for(Player p: dataController.getPlayers()) {
 			if(p.getID()!= connectionID) {
 				//ellipse(p.getX(), p.getY(), 2 * p.getSize(), 2* p.getSize());
 				drawPlayer(p);
@@ -192,5 +190,4 @@ public class World extends PApplet{
 			user.stopShooting();
 		}
 	}
-
 }

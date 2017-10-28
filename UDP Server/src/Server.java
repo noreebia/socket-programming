@@ -25,10 +25,8 @@ public class Server {
 	DatagramPacket packet;
 
 	Random rand = new Random();
-
-	Data data = new Data();
 	
-	DataController dataController = new DataController(data);
+	DataController dataController = new DataController();
 
 	Thread inputHandler;
 	Thread outputHandler;
@@ -58,7 +56,7 @@ public class Server {
 		}
 		
 		executor.execute(new InputHandlingThread(ioSocket, dataController));
-		ses.scheduleAtFixedRate(new OutputHandlingThread(ioSocket, data, clients), 0, 8, TimeUnit.MILLISECONDS);
+		ses.scheduleAtFixedRate(new OutputHandlingThread(ioSocket, dataController, clients), 0, 8, TimeUnit.MILLISECONDS);
 	}
 
 	public void run() {

@@ -5,18 +5,17 @@ import model.*;
 
 public class DataController {
 	
-	private Data data;
+	private Data data = new Data();
 	
-	public DataController(Data data) {
-		this.data = data;
+	public DataController() {
 	}
 	
 	public void addPlayer(Player player) {
-		data.getPlayers().add(player);
+		getPlayers().add(player);
 	}
 	
 	public void updatePlayer(Player player) {
-		for(Player p: data.getPlayers()) {
+		for(Player p: getPlayers()) {
 			if(p.getID() == player.getID()) {
 				p.cloneInfoOf(player);
 				return;
