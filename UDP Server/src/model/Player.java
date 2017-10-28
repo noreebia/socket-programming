@@ -8,6 +8,11 @@ public class Player extends GameObject{
 	
 	ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 	
+	public Player(ArrayList<Bullet> bullets) {
+		this.bullets = bullets;
+	}
+	
+
 	public void setID(int id) {
 		playerID = id;
 	}

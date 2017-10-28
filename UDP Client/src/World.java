@@ -28,7 +28,7 @@ public class World extends PApplet{
 	byte buf[] = new byte[8192];
 	
 	User user = new User(this);
-	Player player = new Player();
+	Player player = new Player(user.getBullets());
 	
 	Data data = new Data();
 	
