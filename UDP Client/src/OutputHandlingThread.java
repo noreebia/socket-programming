@@ -13,14 +13,14 @@ public class OutputHandlingThread implements Runnable {
 
 	InetAddress serverAddress;
 	int serverPort;
-	
+
 	DatagramSocket socket;
 	DatagramPacket packet;
 
 	ByteArrayOutputStream baos = new ByteArrayOutputStream();
 	ObjectOutputStream os;
 	Player player;
-	
+
 	byte[] buf = new byte[8192];
 
 	public OutputHandlingThread(DatagramSocket socket, InetAddress serverAddress, int serverPort, Player player) {
@@ -29,7 +29,7 @@ public class OutputHandlingThread implements Runnable {
 		this.socket = socket;
 		this.player = player;
 		this.serverPort = serverPort;
-		
+
 		try {
 			os = new ObjectOutputStream(baos);
 		} catch (IOException e) {
@@ -38,25 +38,27 @@ public class OutputHandlingThread implements Runnable {
 
 	}
 
-	public void run() {		
+	public void run() {
 		try {
 			baos.reset();
 			os = new ObjectOutputStream(baos);
 			os.writeObject(player);
-		} catch (IOException e) {
+
+			buf = baos.toByteArray();
+
+			packet = new DatagramPacket(buf, buf.length, serverAddress, serverPort);
+			System.out.println("Length of sent data in bytes: " + buf.length);
+
+			try {
+				socket.send(packet);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			System.out.println("Sent");
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		buf = baos.toByteArray();
-
-		packet = new DatagramPacket(buf, buf.length, serverAddress, serverPort);
-		System.out.println("Length of sent data in bytes: " + buf.length);
-
-		try {
-			socket.send(packet);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		System.out.println("Sent");
 	}
 }

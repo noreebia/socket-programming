@@ -34,13 +34,15 @@ public class World extends PApplet{
 	int connectionID;
 	
 	ExecutorService executor = Executors.newCachedThreadPool();
-	ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
+	//ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
+	ScheduledExecutorService ses = Executors.newScheduledThreadPool(3);
 	
 	public World() {
 		
 		System.out.println("initializing world");
 		try {
 			serverAddress = InetAddress.getByName("localhost");
+			//serverAddress = InetAddress.getByName("192.168.0.14");
 			serverPort = 50000;
 			socket = new DatagramSocket();
 		} catch (Exception e) {
@@ -68,7 +70,8 @@ public class World extends PApplet{
 		System.out.println("My ID: " + connectionID);
 		
 		executor.execute(new InputHandlingThread(socket, data));
-		ses.scheduleWithFixedDelay(new OutputHandlingThread(socket, serverAddress, 50001, player), 0, 8, TimeUnit.MILLISECONDS);
+		//ses.scheduleWithFixedDelay(new OutputHandlingThread(socket, serverAddress, 50001, player), 0, 8, TimeUnit.MILLISECONDS);
+		ses.scheduleAtFixedRate(new OutputHandlingThread(socket, serverAddress, 50001, player), 0, 8, TimeUnit.MILLISECONDS);
 	}
 	
 	public int byteArrayToInt(byte[] b) {
@@ -86,13 +89,9 @@ public class World extends PApplet{
 	
 	public void draw() {
 		background(255);
-		
 		user.run();
-		/*
-		player.cloneInfoOf(user);
-		player.setBullets(user.getBullets());
-		*/
 		user.writeInfoInto(player);
+
 		displayGameObjectData();
 	}
 	
@@ -107,7 +106,7 @@ public class World extends PApplet{
 			//System.out.println("Num of player bullets: " + p.getBullets().size());
 			
 			for(Bullet b: p.getBullets()) {
-				ellipse(b.getX(), b.getY(), 3, 3);
+				ellipse(b.getX(), b.getY(), 2 * b.getSize(), 2 * b.getSize());
 			}
 		}
 	}
