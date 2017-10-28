@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Player extends GameObject{
 
 	int playerID;
+	int direction = 0;
 	
 	ArrayList<Bullet> bullets;
 	
@@ -18,6 +19,14 @@ public class Player extends GameObject{
 	
 	public int getID() {
 		return playerID;
+	}
+	
+	public void setDirection(int direction) {
+		this.direction = direction;
+	}
+	
+	public int getDirection() {
+		return direction;
 	}
 	
 	public void cloneInfoOf(GameObject object) {

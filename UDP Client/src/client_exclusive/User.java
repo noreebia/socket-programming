@@ -147,5 +147,6 @@ public class User extends GameObject {
 	
 	public void writeInfoInto(Player player) {
 		player.cloneInfoOf(this);
+		player.setDirection(directionModifier);
 	}
 }

@@ -101,7 +101,8 @@ public class World extends PApplet{
 	public void displayGameObjectData() {
 		for(Player p: data.getPlayers()) {
 			if(p.getID()!= connectionID) {
-				ellipse(p.getX(), p.getY(), 2 * p.getSize(), 2* p.getSize());
+				//ellipse(p.getX(), p.getY(), 2 * p.getSize(), 2* p.getSize());
+				drawPlayer(p);
 			}
 			else {
 				ellipse(p.getX(), p.getY(), 5, 5);
@@ -113,6 +114,18 @@ public class World extends PApplet{
 			}
 		}
 	}
+	
+	public void drawPlayer(Player player) {
+		pushMatrix();
+		translate(player.getX(), player.getY());
+		rotate(  PI/4 * player.getDirection());
+		fill(player.getRGB(0), player.getRGB(1), player.getRGB(2));
+		ellipse(0, 0, player.size * 2, player.size * 2);
+		rect(-2, -player.size, 4, 9);
+		popMatrix();
+	}
+	
+
 	
 	public void keyPressed() {
 		if (keyCode == UP) {
