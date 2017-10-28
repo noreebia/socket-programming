@@ -121,7 +121,7 @@ public class World extends PApplet{
 		rotate(  PI/4 * player.getDirection());
 		fill(player.getRGB(0), player.getRGB(1), player.getRGB(2));
 		ellipse(0, 0, player.size * 2, player.size * 2);
-		rect(-2, -player.size, 4, 9);
+		rect(-2, -player.size, 4, -9);
 		popMatrix();
 	}
 	
