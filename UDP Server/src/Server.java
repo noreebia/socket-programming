@@ -39,7 +39,9 @@ public class Server {
 	ExecutorService executor = Executors.newCachedThreadPool();
 	ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
 	
+	long startTime;
 	public Server() {
+		startTime = System.currentTimeMillis();
 		try {
 			os = new ObjectOutputStream(baos);
 		} catch (IOException e) {
@@ -55,9 +57,37 @@ public class Server {
 		
 		executor.execute(new InputHandlingThread(ioSocket, data));
 		ses.scheduleWithFixedDelay(new OutputHandlingThread(ioSocket, data, clients), 0, 8, TimeUnit.MILLISECONDS);
+		
+		
+		/*
+		packet = new DatagramPacket(buf, buf.length);
+
+		System.out.println("listening...");
+		try {
+			listeningSocket.receive(packet);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("received packet from client");
+
+		clientAddress = packet.getAddress();
+		clientPort = packet.getPort();
+
+		connectionCount++;
+		buf = intToByteArray(connectionCount);
+		
+		packet = new DatagramPacket(buf, buf.length, clientAddress, clientPort);
+		try {
+			listeningSocket.send(packet);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		addClient(connectionCount, clientAddress, clientPort);
+		*/
 	}
 
 	public void run() {
+		
 		while(true) {
 			packet = new DatagramPacket(buf, buf.length);
 
@@ -83,6 +113,31 @@ public class Server {
 			}
 			addClient(connectionCount, clientAddress, clientPort);
 		}
+		
+		/*
+		while(true) {
+			if(System.currentTimeMillis() - startTime >= 10000) {
+				executor.shutdown();
+				ses.shutdownNow();
+
+				try {
+					ses.awaitTermination(5000, TimeUnit.MILLISECONDS);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				System.out.println("Server Shutting down");
+				System.exit(1);
+			}
+			
+			System.out.println(System.currentTimeMillis() - startTime);
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		*/
 	}
 	
 	public byte[] intToByteArray(int i){

@@ -46,6 +46,7 @@ public class InputHandlingThread implements Runnable{
 				temp = (Player)is.readObject();
 				data.updatePlayer(temp);
 				System.out.println("received player object from client and data updated");
+				System.out.println("number of player bullets: " + temp.getBullets().size());
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {

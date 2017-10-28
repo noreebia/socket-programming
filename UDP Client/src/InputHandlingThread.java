@@ -26,7 +26,6 @@ public class InputHandlingThread implements Runnable{
 	
 	public void run() {
 		while(true) {
-			System.out.println("Receiving");
 			packet = new DatagramPacket(buf,buf.length);
 			try {
 				socket.receive(packet);

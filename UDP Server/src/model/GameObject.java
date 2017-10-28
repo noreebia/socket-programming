@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 public class GameObject implements Serializable{
 	
-	float x,y;
-	int[] rgb = {255,255,255};
-	int size = 10;
+	public float x,y;
+	public int[] rgb = {255,255,255};
+	public int size = 10;
 	
 	public void setXY(float x, float y) {
 		this.x = x;

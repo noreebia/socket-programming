@@ -12,6 +12,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import client_exclusive.User;
 import model.*;
 import processing.core.PApplet;
 
@@ -36,6 +37,7 @@ public class World extends PApplet{
 	ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
 	
 	public World() {
+		
 		System.out.println("initializing world");
 		try {
 			serverAddress = InetAddress.getByName("localhost");
@@ -86,7 +88,11 @@ public class World extends PApplet{
 		background(255);
 		
 		user.run();
+		/*
 		player.cloneInfoOf(user);
+		player.setBullets(user.getBullets());
+		*/
+		user.writeInfoInto(player);
 		displayGameObjectData();
 	}
 	
@@ -97,6 +103,11 @@ public class World extends PApplet{
 			}
 			else {
 				ellipse(p.getX(), p.getY(), 5, 5);
+			}
+			//System.out.println("Num of player bullets: " + p.getBullets().size());
+			
+			for(Bullet b: p.getBullets()) {
+				ellipse(b.getX(), b.getY(), 3, 3);
 			}
 		}
 	}
@@ -130,7 +141,7 @@ public class World extends PApplet{
 			user.shouldMove(3, true);
 		}
 		if (key == ' ') {
-			//user.shoot();
+			user.shoot();
 		}
 	}
 
@@ -163,7 +174,7 @@ public class World extends PApplet{
 			user.shouldMove(3, false);
 		}
 		if (key == ' ') {
-			//user.stopShooting();
+			user.stopShooting();
 		}
 	}
 

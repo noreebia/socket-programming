@@ -1,12 +1,14 @@
-package model;
+package client_exclusive;
 
+import java.util.ArrayList;
 
+import model.*;
 import processing.core.PApplet;
 
 public class User extends GameObject {
 	PApplet world;
 	float speed = 4;
-	int directionModifier = 0;
+	public int directionModifier = 0;
 	double angle;
 	boolean[] moving = new boolean[4];
 	boolean[] facing = new boolean[4];
@@ -14,15 +16,18 @@ public class User extends GameObject {
 	float originalSpeed = 4;
 	float diagonalSpeed = (float) (originalSpeed / Math.sqrt(2));
 	
+	Gun gun;
+	
 	public User(PApplet world){
 		this.world = world;
+		gun = new Gun(world, this);
 	}
 
 	public void run() {
 		adjustSpeed();
 		move();
 		setDirection();
-		//gun.run();
+		gun.run();
 		display();
 	}
 
@@ -33,7 +38,7 @@ public class User extends GameObject {
 		world.rotate((float) angle);
 		world.fill(rgb[0], rgb[1], rgb[2]);
 		world.ellipse(0, 0, size * 2, size * 2);
-	//	gun.display();
+		gun.display();
 		world.popMatrix();
 	}
 
@@ -69,6 +74,14 @@ public class User extends GameObject {
 		if (isMoving(3)) {
 			this.x = this.x + speed;
 		}
+	}
+	
+	public void shoot() {
+		gun.startFiring();
+	}
+	
+	public void stopShooting() {
+		gun.stopFiring();
 	}
 
 	public void setAngle() {
@@ -107,6 +120,10 @@ public class User extends GameObject {
 			}
 		}
 	}
+	
+	public ArrayList<Bullet> getBullets(){
+		return gun.getBullets();
+	}
 
 	public void setDirectionModifier(int value) {
 		directionModifier = value;
@@ -126,5 +143,10 @@ public class User extends GameObject {
 
 	public boolean isMoving(int direction) {
 		return moving[direction];
+	}
+	
+	public void writeInfoInto(Player player) {
+		player.cloneInfoOf(this);
+		player.setBullets(this.getBullets());
 	}
 }

@@ -51,6 +51,7 @@ public class OutputHandlingThread implements Runnable{
 			}
 			System.out.println("Sent to:" + c.getAddress().toString());
 		}
+		System.out.println("Length of sent data in byte: " + buf.length);
 	}
 	
 
