@@ -5,11 +5,10 @@ import java.io.Serializable;
 public class GameObject implements Serializable{
 	
 	public float x,y;
-	public int[] rgb = {255,255,255};
-	public int size = 10;
+	public short[] rgb = {255,255,255};
+	public short size = 10;
 	
 	public GameObject() {
-		
 	}
 	
 	public GameObject(float x, float y) {
@@ -38,21 +37,21 @@ public class GameObject implements Serializable{
 		return this.y;
 	}
 	
-	public void setRGB(int x, int y, int z) {
+	public void setRGB(short x, short y, short z) {
 		rgb[0] = x;
 		rgb[1] = y;
 		rgb[2] = z;
 	}
 	
-	public int[] getRGB() {
+	public short[] getRGB() {
 		return rgb;
 	}
 	
-	public int getRGB(int i) {
+	public short getRGB(int i) {
 		return rgb[i];
 	}
 	
-	public void setSize(int size) {
+	public void setSize(short size) {
 		this.size = size;
 	}
 	

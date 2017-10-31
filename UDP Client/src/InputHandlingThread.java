@@ -9,7 +9,7 @@ import model.Data;
 
 public class InputHandlingThread implements Runnable{
 
-	byte[] buf = new byte[10000];
+	byte[] buf = new byte[20000];
 
 	DatagramPacket packet;
 	DatagramSocket socket;

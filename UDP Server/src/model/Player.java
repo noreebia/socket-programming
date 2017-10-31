@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Player extends GameObject{
 
-	int playerID;
-	int direction = 0;
+	short playerID;
+	short direction = 0;
 	
 	ArrayList<Bullet> bullets;
 	
@@ -13,7 +13,7 @@ public class Player extends GameObject{
 		this.bullets = bullets;
 	}
 	
-	public void setID(int id) {
+	public void setID(short id) {
 		playerID = id;
 	}
 	
@@ -21,11 +21,11 @@ public class Player extends GameObject{
 		return playerID;
 	}
 	
-	public void setDirection(int direction) {
+	public void setDirection(short direction) {
 		this.direction = direction;
 	}
 	
-	public int getDirection() {
+	public short getDirection() {
 		return direction;
 	}
 	

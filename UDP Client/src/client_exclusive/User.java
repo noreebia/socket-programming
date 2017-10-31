@@ -8,7 +8,7 @@ import processing.core.PApplet;
 public class User extends GameObject {
 	PApplet world;
 	float speed = 4;
-	public int directionModifier = 0;
+	public short directionModifier = 0;
 	double angle;
 	boolean[] moving = new boolean[4];
 	boolean[] facing = new boolean[4];
@@ -20,6 +20,7 @@ public class User extends GameObject {
 	
 	public User(PApplet world){
 		this.world = world;
+		setRGB( (short)0,(short)255,(short)255);
 		gun = new BulletSystem(world, this);
 	}
 
@@ -97,26 +98,26 @@ public class User extends GameObject {
 		}
 		if (count >= 2) {
 			if (isFacing(0) && isFacing(3)) {
-				setDirectionModifier(1);
+				setDirectionModifier((short)1);
 			} else if (isFacing(2) && isFacing(3)) {
-				setDirectionModifier(3);
+				setDirectionModifier((short)3);
 				this.speed = diagonalSpeed;
 			} else if (isFacing(2) && isFacing(1)) {
-				setDirectionModifier(5);
+				setDirectionModifier((short)5);
 				this.speed = diagonalSpeed;
 			} else if (isFacing(0) && isFacing(1)) {
-				setDirectionModifier(7);
+				setDirectionModifier((short)7);
 				this.speed = diagonalSpeed;
 			}
 		} else {
 			if (isFacing(0)) {
-				setDirectionModifier(0);
+				setDirectionModifier((short)0);
 			} else if (isFacing(2)) {
-				setDirectionModifier(4);
+				setDirectionModifier((short)4);
 			} else if (isFacing(3)) {
-				setDirectionModifier(2);
+				setDirectionModifier((short)2);
 			} else if (isFacing(1)) {
-				setDirectionModifier(6);
+				setDirectionModifier((short)6);
 			}
 		}
 	}
@@ -125,7 +126,7 @@ public class User extends GameObject {
 		return gun.getBullets();
 	}
 
-	public void setDirectionModifier(int value) {
+	public void setDirectionModifier(short value) {
 		directionModifier = value;
 	}
 

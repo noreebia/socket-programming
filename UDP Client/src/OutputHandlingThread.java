@@ -47,6 +47,8 @@ public class OutputHandlingThread implements Runnable {
 			buf = baos.toByteArray();
 
 			packet = new DatagramPacket(buf, buf.length, serverAddress, serverPort);
+			
+			System.out.println("Number of bullets: " + player.getBullets().size());
 			System.out.println("Length of sent data in bytes: " + buf.length);
 
 			try {

@@ -36,7 +36,7 @@ public class Server {
 
 	ArrayList<Client> clients = new ArrayList<Client>();
 	
-	int connectionCount=0;
+	short connectionCount=0;
 	
 	ExecutorService executor = Executors.newCachedThreadPool();
 	//ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
@@ -61,7 +61,7 @@ public class Server {
 		executor.execute(new InputHandlingThread(ioSocket, dataController));
 		ses.scheduleAtFixedRate(new OutputHandlingThread(ioSocket, dataController, clients), 0, 8, TimeUnit.MILLISECONDS);
 		
-		enemySystem.resetEnemies(200);
+		enemySystem.resetEnemies(500);
 	}
 
 	public void run() {
@@ -99,7 +99,7 @@ public class Server {
 		return bb.array();
 	}
 
-	public void addClient(int id, InetAddress clientAddress, int clientPort) {
+	public void addClient(short id, InetAddress clientAddress, int clientPort) {
 		clients.add(new Client(id, clientAddress, clientPort));
 	}
 

@@ -12,6 +12,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import client_exclusive.DisplayHandler;
 import client_exclusive.User;
 import control.DataController;
 import model.*;
@@ -32,11 +33,13 @@ public class World extends PApplet{
 		
 	DataController dataController = new DataController();
 	
-	int connectionID;
+	short connectionID;
 	
 	ExecutorService executor = Executors.newCachedThreadPool();
 	//ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
-	ScheduledExecutorService ses = Executors.newScheduledThreadPool(3);
+	ScheduledExecutorService ses = Executors.newScheduledThreadPool(2);
+	
+	DisplayHandler displayHandler = new DisplayHandler(this, connectionID, dataController);
 	
 	public World() {
 		
@@ -73,11 +76,12 @@ public class World extends PApplet{
 		executor.execute(new InputHandlingThread(socket, dataController));
 		//ses.scheduleWithFixedDelay(new OutputHandlingThread(socket, serverAddress, 50001, player), 0, 8, TimeUnit.MILLISECONDS);
 		ses.scheduleAtFixedRate(new OutputHandlingThread(socket, serverAddress, 50001, player), 0, 8, TimeUnit.MILLISECONDS);
+		
 	}
 	
-	public int byteArrayToInt(byte[] b) {
+	public short byteArrayToInt(byte[] b) {
 		ByteBuffer bb = ByteBuffer.wrap(b);
-		return bb.getInt();
+		return bb.getShort();
 	}
 	
 	public void settings() {
@@ -85,17 +89,21 @@ public class World extends PApplet{
 	}
 	
 	public void setup() {
-		fill(0);
+		strokeWeight(2);
+		stroke(255);
+
+		//fill(255);
 	}
 	
 	public void draw() {
-		background(255);
+		background(0);
 		user.run();
 		user.writeInfoInto(player);
 
-		displayGameObjectData();
+		displayHandler.displayGameObjectData();
 	}
 	
+	/*
 	public void displayGameObjectData() {
 		for(Player p: dataController.getPlayers()) {
 			if(p.getID()!= connectionID) {
@@ -125,9 +133,8 @@ public class World extends PApplet{
 		rect(-2, -player.size, 4, -9);
 		popMatrix();
 	}
-	
+	*/
 
-	
 	public void keyPressed() {
 		if (keyCode == UP) {
 			user.shouldFace(0, true);
