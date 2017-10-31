@@ -39,7 +39,7 @@ public class World extends PApplet{
 	//ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
 	ScheduledExecutorService ses = Executors.newScheduledThreadPool(2);
 	
-	DisplayHandler displayHandler = new DisplayHandler(this, connectionID, dataController, user);
+	DisplayHandler displayHandler;
 	
 	public World() {
 		
@@ -60,6 +60,7 @@ public class World extends PApplet{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		try {
 		System.out.println("Sent packet to server");
 		
 		packet = new DatagramPacket(buf,buf.length);
@@ -69,17 +70,22 @@ public class World extends PApplet{
 			e.printStackTrace();
 		}
 		
-		connectionID = byteArrayToInt(packet.getData());
-		player.setID(connectionID);
+		connectionID = byteArrayToShort(packet.getData());
+		player.setID((short)connectionID);
 		System.out.println("My ID: " + connectionID);
 		
 		executor.execute(new InputHandlingThread(socket, dataController, connectionID, user));
 		//ses.scheduleWithFixedDelay(new OutputHandlingThread(socket, serverAddress, 50001, player), 0, 8, TimeUnit.MILLISECONDS);
 		ses.scheduleAtFixedRate(new OutputHandlingThread(socket, serverAddress, 50001, player), 0, 8, TimeUnit.MILLISECONDS);
 		
+		displayHandler = new DisplayHandler(this, connectionID, dataController, user);
+
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
-	public short byteArrayToInt(byte[] b) {
+	public short byteArrayToShort(byte[] b) {
 		ByteBuffer bb = ByteBuffer.wrap(b);
 		return bb.getShort();
 	}

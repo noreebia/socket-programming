@@ -9,11 +9,11 @@ import processing.core.PApplet;
 public class DisplayHandler {
 	
 	PApplet world;
-	int connectionID;
+	short connectionID;
 	DataController dataController;
 	User user;
 	
-	public DisplayHandler(PApplet world, int connectionID, DataController dataController, User user) {
+	public DisplayHandler(PApplet world, short connectionID, DataController dataController, User user) {
 		this.world = world;
 		this.connectionID = connectionID;
 		this.dataController = dataController;
@@ -23,6 +23,9 @@ public class DisplayHandler {
 	public void displayGameObjectData() {
 		for(Player p: dataController.getPlayers()) {
 			if(p.getID()!= connectionID) {
+				System.out.println("player's id: " + p.getID());
+				System.out.println("my id: " + connectionID);
+				System.out.println("drawing player...");
 				//ellipse(p.getX(), p.getY(), 2 * p.getSize(), 2* p.getSize());
 				drawPlayer(p);
 				/*
@@ -32,6 +35,11 @@ public class DisplayHandler {
 				*/
 			}
 			else {
+				System.out.println("player's id: " + p.getID());
+				System.out.println("my id: " + connectionID);
+				System.out.println("drawing me...");
+
+				world.fill(255, 128,0);
 				world.ellipse(p.getX(), p.getY(), 5, 5);
 				
 				/*
@@ -56,7 +64,6 @@ public class DisplayHandler {
 			
 			
 			for(Bullet b: p.getBullets()) {
-				//world.ellipse(b.getX(), b.getY(), 2 * b.getSize(), 2 * b.getSize());
 				drawBullet(b);
 			}
 			
@@ -77,7 +84,7 @@ public class DisplayHandler {
 	}
 	
 	public void drawBullet(Bullet bullet) {
-		//world.fill(bullet.getRGB(0), bullet.getRGB(1), bullet.getRGB(2));
+		world.fill(bullet.getRGB(0), bullet.getRGB(1), bullet.getRGB(2));
 		world.ellipse(bullet.getX(), bullet.getY(), 2 * bullet.getSize(), 2 * bullet.getSize());
 	}
 	

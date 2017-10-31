@@ -19,7 +19,7 @@ public class Player extends GameObject{
 		playerID = id;
 	}
 	
-	public int getID() {
+	public short getID() {
 		return playerID;
 	}
 	

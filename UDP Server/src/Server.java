@@ -82,7 +82,7 @@ public class Server {
 			clientPort = packet.getPort();
 
 			connectionCount++;
-			buf = intToByteArray(connectionCount);
+			buf = shortToByteArray(connectionCount);
 			
 			packet = new DatagramPacket(buf, buf.length, clientAddress, clientPort);
 			try {
@@ -94,9 +94,10 @@ public class Server {
 		}
 	}
 	
-	public byte[] intToByteArray(int i){
-		ByteBuffer bb = ByteBuffer.allocate(4);
-		bb.putInt(i);
+	public byte[] shortToByteArray(short i){
+		ByteBuffer bb = ByteBuffer.allocate(2);
+		//bb.putInt(i);
+		bb.putShort(i);
 		return bb.array();
 	}
 
