@@ -44,6 +44,8 @@ public class Server {
 	
 	long startTime;
 	public Server() {
+		enemySystem.resetEnemies(200);
+
 		startTime = System.currentTimeMillis();
 		try {
 			os = new ObjectOutputStream(baos);
@@ -59,9 +61,8 @@ public class Server {
 		}
 		
 		executor.execute(new InputHandlingThread(ioSocket, dataController));
-		ses.scheduleAtFixedRate(new OutputHandlingThread(ioSocket, dataController, clients), 0, 8, TimeUnit.MILLISECONDS);
+		ses.scheduleAtFixedRate(new OutputHandlingThread(ioSocket, dataController, clients, enemySystem), 0, 8, TimeUnit.MILLISECONDS);
 		
-		enemySystem.resetEnemies(500);
 	}
 
 	public void run() {

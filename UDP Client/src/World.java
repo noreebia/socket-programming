@@ -89,7 +89,7 @@ public class World extends PApplet{
 	}
 	
 	public void setup() {
-		strokeWeight(2);
+		strokeWeight((float) 1.5);
 		stroke(255);
 
 		//fill(255);
@@ -99,7 +99,6 @@ public class World extends PApplet{
 		background(0);
 		user.run();
 		user.writeInfoInto(player);
-
 		displayHandler.displayGameObjectData();
 	}
 	

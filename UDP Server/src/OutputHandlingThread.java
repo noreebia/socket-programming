@@ -5,6 +5,7 @@ import java.net.*;
 import java.util.ArrayList;
 
 import control.DataController;
+import control.EnemySystem;
 import model.*;
 
 public class OutputHandlingThread implements Runnable{
@@ -19,7 +20,9 @@ public class OutputHandlingThread implements Runnable{
 	DataController dataController;
 	ArrayList<Client> clients = new ArrayList<Client>();
 	
-	public OutputHandlingThread(DatagramSocket ioSocket, DataController dataController, ArrayList<Client> clients) {
+	EnemySystem enemySystem;
+	
+	public OutputHandlingThread(DatagramSocket ioSocket, DataController dataController, ArrayList<Client> clients, EnemySystem enemySystem) {
 		System.out.println("OutputHandlingThread created");
 		this.ioSocket = ioSocket;
 		try {
@@ -30,9 +33,12 @@ public class OutputHandlingThread implements Runnable{
 				
 		this.clients = clients;
 		this.dataController = dataController;
+		this.enemySystem = enemySystem;
 	}
 
 	public void run() {
+		enemySystem.run();
+		
 		try {
 			baos.reset();
 			os = new ObjectOutputStream(baos);
