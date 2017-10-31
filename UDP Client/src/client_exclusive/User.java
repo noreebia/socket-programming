@@ -16,11 +16,11 @@ public class User extends GameObject {
 	float originalSpeed = 4;
 	float diagonalSpeed = (float) (originalSpeed / Math.sqrt(2));
 	
-	Gun gun;
+	BulletSystem gun;
 	
 	public User(PApplet world){
 		this.world = world;
-		gun = new Gun(world, this);
+		gun = new BulletSystem(world, this);
 	}
 
 	public void run() {

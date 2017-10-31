@@ -28,7 +28,15 @@ public class DataController {
 		return data.players;
 	}
 	
+	public ArrayList<Enemy> getEnemies(){
+		return data.enemies;
+	}
+	
 	public Data getData() {
 		return data;
+	}
+	
+	public void createNewEnemyArrayList() {
+		data.enemies = new ArrayList<Enemy>();
 	}
 }

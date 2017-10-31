@@ -111,6 +111,9 @@ public class World extends PApplet{
 				ellipse(b.getX(), b.getY(), 2 * b.getSize(), 2 * b.getSize());
 			}
 		}
+		for(Enemy e: dataController.getEnemies()) {
+			ellipse(e.getX(), e.getY(), 2 * e.getSize(), 2 * e.getSize());
+		}
 	}
 	
 	public void drawPlayer(Player player) {

@@ -8,6 +8,15 @@ public class GameObject implements Serializable{
 	public int[] rgb = {255,255,255};
 	public int size = 10;
 	
+	public GameObject() {
+		
+	}
+	
+	public GameObject(float x, float y) {
+		this.x = x;
+		this.y = y;
+	}
+	
 	public void setXY(float x, float y) {
 		this.x = x;
 		this.y = y;
@@ -49,5 +58,17 @@ public class GameObject implements Serializable{
 	
 	public int getSize() {
 		return size;
+	}
+	
+	public boolean isOutOfMap() {
+		if(x < -size * 2 || x > 1200 + size * 2 || y < -size*2 || y > 800 + size*2) {
+			return true;
+		}
+		return false;
+	}
+	
+	public void move(float x, float y) {
+		this.x += x;
+		this.y += y;
 	}
 }

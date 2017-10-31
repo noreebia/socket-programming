@@ -12,6 +12,7 @@ public class DataController {
 	
 	public void cloneData(Data data) {
 		this.data.players = data.players;
+		this.data.enemies = data.enemies;
 	}
 	
 	public ArrayList<Player> getPlayers(){
@@ -20,5 +21,9 @@ public class DataController {
 	
 	public Data getData() {
 		return data;
+	}
+	
+	public ArrayList<Enemy> getEnemies(){
+		return data.enemies;
 	}
 }

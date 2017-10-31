@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import model.Bullet;
 import processing.core.PApplet;
 
-public class Gun {
+public class BulletSystem {
 	PApplet world;
 	User owner;
 	boolean isFiring;
@@ -21,7 +21,7 @@ public class Gun {
 	
 	ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 
-	public Gun(PApplet world, User owner) {
+	public BulletSystem(PApplet world, User owner) {
 		this.world = world;
 		this.owner = owner;
 	}
@@ -52,9 +52,18 @@ public class Gun {
 		int i;
 		for(i =0; i < bullets.size(); i++) {
 			moveBullet(bullets.get(i));
+			if( bullets.get(i).isOutOfMap() ) {
+				bullets.remove(i);
+			}
+			/*
+			moveBullet(bullets.get(i));
 			if(isBulletOutOfMap(bullets.get(i))) {
 				bullets.remove(i);
 			}
+			if(  bullets.gisBulletOutOfMap(bullets.get(i))  ) {
+				bullets.remove(i);
+			}
+			*/
 		}
 	}
 	
@@ -105,16 +114,20 @@ public class Gun {
 			bulletSpeedModifier = bulletSpeedModifierDiagonal;
 			break;
 		}
+		/*
 		b.setX(b.getX() + bulletSpeedX * bulletSpeedModifier);
 		b.setY(b.getY() + bulletSpeedY * bulletSpeedModifier);
+		*/
+		b.move(bulletSpeedX * bulletSpeedModifier, bulletSpeedY * bulletSpeedModifier);
 	}
-	
+	/*
 	public boolean isBulletOutOfMap(Bullet b) {
 		if(b.getX() < -b.size * 2 || b.getX() > (world.width + b.size * 2) || b.getY() < -b.size*2 || b.getY() > world.height + b.size * 2) {
 			return true;
 		}
 		return false;
 	}
+	*/
 	
 	public ArrayList<Bullet> getBullets(){
 		return bullets;

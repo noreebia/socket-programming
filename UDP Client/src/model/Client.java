@@ -33,5 +33,4 @@ public class Client {
 	public int getPort() {
 		return port;
 	}
-
 }

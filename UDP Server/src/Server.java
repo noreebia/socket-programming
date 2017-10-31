@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.concurrent.*;
 
 import control.DataController;
+import control.EnemySystem;
 import model.*;
 
 public class Server {
@@ -28,6 +29,8 @@ public class Server {
 	
 	DataController dataController = new DataController();
 
+	EnemySystem enemySystem = new EnemySystem(dataController);
+	
 	Thread inputHandler;
 	Thread outputHandler;
 
@@ -57,6 +60,8 @@ public class Server {
 		
 		executor.execute(new InputHandlingThread(ioSocket, dataController));
 		ses.scheduleAtFixedRate(new OutputHandlingThread(ioSocket, dataController, clients), 0, 8, TimeUnit.MILLISECONDS);
+		
+		enemySystem.resetEnemies(200);
 	}
 
 	public void run() {
