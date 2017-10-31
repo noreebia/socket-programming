@@ -19,7 +19,9 @@ public class BulletSystem {
 	float bulletSpeedModifierDiagonal = (float) (bulletSpeedModifierStraight / Math.sqrt(2));
 	float bulletSpeedX, bulletSpeedY;
 	
-	ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+	public ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+	
+	public ArrayList<Integer> collidedBullets = new ArrayList<Integer>();
 
 	public BulletSystem(PApplet world, User owner) {
 		this.world = world;
@@ -31,11 +33,40 @@ public class BulletSystem {
 	}
 
 	public void run() {
+		//removeInactiveBullets();
 		fire();
 		manageBullets();
 		displayBullets();
 		System.out.println("Active bullets: " + bullets.size());
 	}
+	
+	public void removeInactiveBullets() {
+		int i;
+		for(i=0; i< bullets.size();i++) {
+			if(!bullets.get(i).isActive()) {
+				bullets.remove(i);
+			}
+		}
+	}
+	
+	/*
+	public void remove(){
+		int i,k;
+		for(i=0; i< collidedBullets.size(); i++) {
+			for(k=0; k< bullets.size(); k++) {
+				bullets.remove(collidedBullets.get(i));
+			}
+		}
+	}
+	
+	public void removeCollidedBullet(int i) {
+		int k;
+		for(k=0; k< collidedBullets.size(); k++) {
+			
+		}
+		bullets.remove(i);
+	}
+	*/
 	
 	public void fire() {
 		if (isFiring) {
@@ -52,7 +83,7 @@ public class BulletSystem {
 		int i;
 		for(i =0; i < bullets.size(); i++) {
 			moveBullet(bullets.get(i));
-			if( bullets.get(i).isOutOfMap() ) {
+			if( bullets.get(i).isOutOfMap() || !bullets.get(i).isActive()) {
 				bullets.remove(i);
 			}
 			/*

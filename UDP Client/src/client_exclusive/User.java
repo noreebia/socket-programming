@@ -16,8 +16,8 @@ public class User extends GameObject {
 	float originalSpeed = 4;
 	float diagonalSpeed = (float) (originalSpeed / Math.sqrt(2));
 	
-	BulletSystem gun;
-	
+	public BulletSystem gun;
+		
 	public User(PApplet world){
 		this.world = world;
 		setRGB( (short)0,(short)255,(short)255);

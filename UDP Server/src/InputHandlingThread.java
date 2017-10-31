@@ -4,6 +4,7 @@ import java.io.ObjectInputStream;
 import java.net.*;
 
 import control.DataController;
+import control.EnemySystem;
 import model.*;
 
 public class InputHandlingThread implements Runnable{
@@ -16,11 +17,14 @@ public class InputHandlingThread implements Runnable{
 	
 	ByteArrayInputStream bais;
 	ObjectInputStream is;
+	
+	EnemySystem enemySystem;
 
-	public InputHandlingThread(DatagramSocket ioSocket, DataController dataController) {
+	public InputHandlingThread(DatagramSocket ioSocket, DataController dataController, EnemySystem enemySystem) {
 		System.out.println("Input handler created.");
 		this.ioSocket = ioSocket;
 		this.dataController = dataController;
+		this.enemySystem = enemySystem;
 	}
 	
 	public void run() {
@@ -48,6 +52,11 @@ public class InputHandlingThread implements Runnable{
 				dataController.updatePlayer(temp);
 				System.out.println("received player object from client and data updated");
 				System.out.println("number of player bullets: " + temp.getBullets().size());
+				
+				for(Integer i: temp.getHitEnemies()) {
+					enemySystem.respawnEnemy(i);
+				}
+				
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {

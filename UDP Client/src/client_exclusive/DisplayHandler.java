@@ -11,11 +11,13 @@ public class DisplayHandler {
 	PApplet world;
 	int connectionID;
 	DataController dataController;
+	User user;
 	
-	public DisplayHandler(PApplet world, int connectionID, DataController dataController) {
+	public DisplayHandler(PApplet world, int connectionID, DataController dataController, User user) {
 		this.world = world;
 		this.connectionID = connectionID;
 		this.dataController = dataController;
+		this.user = user;
 	}
 	
 	public void displayGameObjectData() {
@@ -23,16 +25,41 @@ public class DisplayHandler {
 			if(p.getID()!= connectionID) {
 				//ellipse(p.getX(), p.getY(), 2 * p.getSize(), 2* p.getSize());
 				drawPlayer(p);
+				/*
+				for(Bullet b: p.getBullets()) {
+					drawBullet(b);
+				}
+				*/
 			}
 			else {
 				world.ellipse(p.getX(), p.getY(), 5, 5);
+				
+				/*
+				int i;
+				for(i=0; i< p.getBullets().size();i++) {
+					if(!p.getBullets().get(i).isActive()) {
+						user.gun.bullets.remove(i);
+					}
+					
+				}
+				*/
+				/*
+				for(Bullet b: p.getBullets()) {
+					if(!b.isActive()) {
+						
+					}
+					drawBullet(b);
+				}
+				*/
 			}
 			//System.out.println("Num of player bullets: " + p.getBullets().size());
+			
 			
 			for(Bullet b: p.getBullets()) {
 				//world.ellipse(b.getX(), b.getY(), 2 * b.getSize(), 2 * b.getSize());
 				drawBullet(b);
 			}
+			
 		}
 		for(Enemy e: dataController.getEnemies()) {
 			drawEnemy(e);
@@ -58,5 +85,4 @@ public class DisplayHandler {
 		world.fill(enemy.getRGB(0), enemy.getRGB(1), enemy.getRGB(2));
 		world.ellipse(enemy.getX(), enemy.getY(), 2 * enemy.getSize(),  2 * enemy.getSize());
 	}
-
 }

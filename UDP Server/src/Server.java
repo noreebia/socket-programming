@@ -60,7 +60,7 @@ public class Server {
 			e1.printStackTrace();
 		}
 		
-		executor.execute(new InputHandlingThread(ioSocket, dataController));
+		executor.execute(new InputHandlingThread(ioSocket, dataController, enemySystem));
 		ses.scheduleAtFixedRate(new OutputHandlingThread(ioSocket, dataController, clients, enemySystem), 0, 8, TimeUnit.MILLISECONDS);
 		
 	}

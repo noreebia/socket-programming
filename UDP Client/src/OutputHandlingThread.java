@@ -56,9 +56,9 @@ public class OutputHandlingThread implements Runnable {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
+			
 			System.out.println("Sent");
-
+			player.getHitEnemies().clear();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

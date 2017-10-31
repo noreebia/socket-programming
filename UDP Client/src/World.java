@@ -39,7 +39,7 @@ public class World extends PApplet{
 	//ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
 	ScheduledExecutorService ses = Executors.newScheduledThreadPool(2);
 	
-	DisplayHandler displayHandler = new DisplayHandler(this, connectionID, dataController);
+	DisplayHandler displayHandler = new DisplayHandler(this, connectionID, dataController, user);
 	
 	public World() {
 		
@@ -73,7 +73,7 @@ public class World extends PApplet{
 		player.setID(connectionID);
 		System.out.println("My ID: " + connectionID);
 		
-		executor.execute(new InputHandlingThread(socket, dataController));
+		executor.execute(new InputHandlingThread(socket, dataController, connectionID, user));
 		//ses.scheduleWithFixedDelay(new OutputHandlingThread(socket, serverAddress, 50001, player), 0, 8, TimeUnit.MILLISECONDS);
 		ses.scheduleAtFixedRate(new OutputHandlingThread(socket, serverAddress, 50001, player), 0, 8, TimeUnit.MILLISECONDS);
 		
@@ -97,9 +97,49 @@ public class World extends PApplet{
 	
 	public void draw() {
 		background(0);
+		handleBulletEnemyCollision();
+
 		user.run();
 		user.writeInfoInto(player);
 		displayHandler.displayGameObjectData();
+	}
+	
+	public void handleBulletEnemyCollision() {
+		/*
+		for(Player p: dataController.getPlayers()) {
+			for(Bullet b: p.getBullets()) {
+				for(Enemy e: dataController.getEnemies()) {
+					if(getDistance(e, b) <= b.getSize() + e.getSize()) {
+					}
+				}
+			}
+		}
+		*/
+		int i;
+		for(Bullet b: user.getBullets()) {
+			/*
+			for(Enemy e: dataController.getEnemies()) {
+				if(getDistance(e,b) <= b.getSize() + e.getSize()) {
+					b.deactivate();
+				}
+			}
+			*/
+			for(i=0; i< dataController.getEnemies().size(); i++) {
+				if(getDistance(b, dataController.getEnemies().get(i)) <= b.getSize() + dataController.getEnemies().get(i).getSize() )  {
+					player.addHitEnemies(i);
+					b.deactivate();
+				}
+			}
+		}
+	}
+	
+	
+	
+	public double getDistance(GameObject a, GameObject b) {
+		float xDistance = a.getX() - b.getX();
+		float yDistance = a.getY() - b.getY();
+		
+		return Math.sqrt( Math.pow(xDistance, 2) + Math.pow(yDistance, 2) );
 	}
 	
 	/*

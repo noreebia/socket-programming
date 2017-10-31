@@ -29,19 +29,28 @@ public class EnemySystem {
 	
 	public void run() {
 		moveEnemiesRight();
-		handleBulletEnemyCollision();
+		//handleBulletEnemyCollision();
 	}
 	
-	public void handleBulletEnemyCollision() {
+	public void handleBulletEnemyCollision() {		
 		for(Player p: dataController.getPlayers()) {
 			for(Bullet b: p.getBullets()) {
 				for(Enemy e: enemies) {
-					if(getDistance(e, b) <= b.getSize() + p.getSize()) {
-						e.setX(-offset);
+					if(getDistance(e, b) <= b.getSize() + e.getSize()) {
+						//e.setX(-offset);
+						respawnEnemy(e);
 					}
 				}
 			}
 		}
+	}
+	
+	public void respawnEnemy(int i) {
+		this.enemies.get(i).setX(-offset);
+	}
+	
+	public void respawnEnemy(Enemy enemy) {
+		enemy.setX(-offset);
 	}
 	
 	public double getDistance(GameObject a, GameObject b) {
@@ -58,5 +67,9 @@ public class EnemySystem {
 				e.setX(-offset);
 			}
 		}
+	}
+	
+	public ArrayList<Enemy> getEnemies(){
+		return enemies;
 	}
 }

@@ -9,6 +9,8 @@ public class Player extends GameObject{
 	
 	ArrayList<Bullet> bullets;
 	
+	ArrayList<Integer> enemiesHit = new ArrayList<Integer>();
+	
 	public Player(ArrayList<Bullet> bullets) {
 		this.bullets = bullets;
 	}
@@ -47,5 +49,13 @@ public class Player extends GameObject{
 	
 	public ArrayList<Bullet> getBullets(){
 		return bullets;
+	}
+	
+	public void addHitEnemies(int i) {
+		this.enemiesHit.add(i);
+	}
+	
+	public ArrayList<Integer> getHitEnemies(){
+		return enemiesHit;
 	}
 }
