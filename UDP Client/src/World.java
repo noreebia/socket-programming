@@ -24,8 +24,6 @@ public class World extends PApplet{
 	DatagramSocket socket;
 	DatagramPacket packet;
 			
-	int x,y;
-	int pos[] = new int[2];
 	byte buf[] = new byte[8192];
 	
 	User user = new User(this);
@@ -36,7 +34,6 @@ public class World extends PApplet{
 	short connectionID;
 	
 	ExecutorService executor = Executors.newCachedThreadPool();
-	//ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
 	ScheduledExecutorService ses = Executors.newScheduledThreadPool(2);
 	
 	DisplayHandler displayHandler;
@@ -75,7 +72,6 @@ public class World extends PApplet{
 		System.out.println("My ID: " + connectionID);
 		
 		executor.execute(new InputHandlingThread(socket, dataController, connectionID, user));
-		//ses.scheduleWithFixedDelay(new OutputHandlingThread(socket, serverAddress, 50001, player), 0, 8, TimeUnit.MILLISECONDS);
 		ses.scheduleAtFixedRate(new OutputHandlingThread(socket, serverAddress, 50001, player), 0, 8, TimeUnit.MILLISECONDS);
 		
 		displayHandler = new DisplayHandler(this, connectionID, dataController, user);
@@ -96,13 +92,11 @@ public class World extends PApplet{
 	
 	public void setup() {
 		strokeWeight((float) 1.5);
-		stroke(255);
-
-		//fill(255);
+		stroke(0);
 	}
 	
 	public void draw() {
-		background(0);
+		background(255);
 		handleBulletEnemyCollision();
 
 		user.run();
@@ -111,25 +105,8 @@ public class World extends PApplet{
 	}
 	
 	public void handleBulletEnemyCollision() {
-		/*
-		for(Player p: dataController.getPlayers()) {
-			for(Bullet b: p.getBullets()) {
-				for(Enemy e: dataController.getEnemies()) {
-					if(getDistance(e, b) <= b.getSize() + e.getSize()) {
-					}
-				}
-			}
-		}
-		*/
 		int i;
 		for(Bullet b: user.getBullets()) {
-			/*
-			for(Enemy e: dataController.getEnemies()) {
-				if(getDistance(e,b) <= b.getSize() + e.getSize()) {
-					b.deactivate();
-				}
-			}
-			*/
 			for(i=0; i< dataController.getEnemies().size(); i++) {
 				if(getDistance(b, dataController.getEnemies().get(i)) <= b.getSize() + dataController.getEnemies().get(i).getSize() )  {
 					player.addHitEnemies(i);
@@ -148,38 +125,6 @@ public class World extends PApplet{
 		return Math.sqrt( Math.pow(xDistance, 2) + Math.pow(yDistance, 2) );
 	}
 	
-	/*
-	public void displayGameObjectData() {
-		for(Player p: dataController.getPlayers()) {
-			if(p.getID()!= connectionID) {
-				//ellipse(p.getX(), p.getY(), 2 * p.getSize(), 2* p.getSize());
-				drawPlayer(p);
-			}
-			else {
-				ellipse(p.getX(), p.getY(), 5, 5);
-			}
-			//System.out.println("Num of player bullets: " + p.getBullets().size());
-			
-			for(Bullet b: p.getBullets()) {
-				ellipse(b.getX(), b.getY(), 2 * b.getSize(), 2 * b.getSize());
-			}
-		}
-		for(Enemy e: dataController.getEnemies()) {
-			ellipse(e.getX(), e.getY(), 2 * e.getSize(), 2 * e.getSize());
-		}
-	}
-	
-	public void drawPlayer(Player player) {
-		pushMatrix();
-		translate(player.getX(), player.getY());
-		rotate(  PI/4 * player.getDirection());
-		fill(player.getRGB(0), player.getRGB(1), player.getRGB(2));
-		ellipse(0, 0, player.size * 2, player.size * 2);
-		rect(-2, -player.size, 4, -9);
-		popMatrix();
-	}
-	*/
-
 	public void keyPressed() {
 		if (keyCode == UP) {
 			user.shouldFace(0, true);

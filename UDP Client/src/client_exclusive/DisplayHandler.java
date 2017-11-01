@@ -26,13 +26,7 @@ public class DisplayHandler {
 				System.out.println("player's id: " + p.getID());
 				System.out.println("my id: " + connectionID);
 				System.out.println("drawing player...");
-				//ellipse(p.getX(), p.getY(), 2 * p.getSize(), 2* p.getSize());
 				drawPlayer(p);
-				/*
-				for(Bullet b: p.getBullets()) {
-					drawBullet(b);
-				}
-				*/
 			}
 			else {
 				System.out.println("player's id: " + p.getID());
@@ -41,28 +35,8 @@ public class DisplayHandler {
 
 				world.fill(255, 128,0);
 				world.ellipse(p.getX(), p.getY(), 5, 5);
-				
-				/*
-				int i;
-				for(i=0; i< p.getBullets().size();i++) {
-					if(!p.getBullets().get(i).isActive()) {
-						user.gun.bullets.remove(i);
-					}
-					
-				}
-				*/
-				/*
-				for(Bullet b: p.getBullets()) {
-					if(!b.isActive()) {
-						
-					}
-					drawBullet(b);
-				}
-				*/
 			}
 			//System.out.println("Num of player bullets: " + p.getBullets().size());
-			
-			
 			for(Bullet b: p.getBullets()) {
 				drawBullet(b);
 			}

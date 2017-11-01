@@ -18,7 +18,7 @@ public class OutputHandlingThread implements Runnable{
 	DatagramPacket packet;
 	
 	DataController dataController;
-	ArrayList<Client> clients = new ArrayList<Client>();
+	ArrayList<Client> clients;
 	
 	EnemySystem enemySystem;
 	

@@ -39,7 +39,6 @@ public class Server {
 	short connectionCount=0;
 	
 	ExecutorService executor = Executors.newCachedThreadPool();
-	//ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
 	ScheduledExecutorService ses = Executors.newScheduledThreadPool(3);
 	
 	long startTime;
@@ -62,7 +61,6 @@ public class Server {
 		
 		executor.execute(new InputHandlingThread(ioSocket, dataController, enemySystem));
 		ses.scheduleAtFixedRate(new OutputHandlingThread(ioSocket, dataController, clients, enemySystem), 0, 8, TimeUnit.MILLISECONDS);
-		
 	}
 
 	public void run() {
@@ -96,7 +94,6 @@ public class Server {
 	
 	public byte[] shortToByteArray(short i){
 		ByteBuffer bb = ByteBuffer.allocate(2);
-		//bb.putInt(i);
 		bb.putShort(i);
 		return bb.array();
 	}

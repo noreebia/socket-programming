@@ -21,7 +21,7 @@ public class OutputHandlingThread implements Runnable {
 	ObjectOutputStream os;
 	Player player;
 
-	byte[] buf = new byte[8192];
+	byte[] buf;
 
 	public OutputHandlingThread(DatagramSocket socket, InetAddress serverAddress, int serverPort, Player player) {
 		System.out.println("Output handler created");
