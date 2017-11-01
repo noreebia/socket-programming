@@ -16,19 +16,19 @@ public class User extends GameObject {
 	float originalSpeed = 4;
 	float diagonalSpeed = (float) (originalSpeed / Math.sqrt(2));
 	
-	public BulletSystem gun;
+	public BulletSystem bulletSystem;
 		
 	public User(PApplet world){
 		this.world = world;
 		setRGB( (short)0,(short)255,(short)255);
-		gun = new BulletSystem(world, this);
+		bulletSystem = new BulletSystem(world, this);
 	}
 
 	public void run() {
 		adjustSpeed();
 		move();
 		setDirection();
-		gun.run();
+		bulletSystem.run();
 		display();
 	}
 
@@ -39,7 +39,7 @@ public class User extends GameObject {
 		world.rotate((float) angle);
 		world.fill(rgb[0], rgb[1], rgb[2]);
 		world.ellipse(0, 0, size * 2, size * 2);
-		gun.display();
+		bulletSystem.display();
 		world.popMatrix();
 	}
 
@@ -78,11 +78,11 @@ public class User extends GameObject {
 	}
 	
 	public void shoot() {
-		gun.startFiring();
+		bulletSystem.startFiring();
 	}
 	
 	public void stopShooting() {
-		gun.stopFiring();
+		bulletSystem.stopFiring();
 	}
 
 	public void setAngle() {
@@ -123,7 +123,7 @@ public class User extends GameObject {
 	}
 	
 	public ArrayList<Bullet> getBullets(){
-		return gun.getBullets();
+		return bulletSystem.getBullets();
 	}
 
 	public void setDirectionModifier(short value) {

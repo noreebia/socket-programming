@@ -3,6 +3,7 @@ package client_exclusive;
 import control.DataController;
 import model.Bullet;
 import model.Enemy;
+import model.GameObject;
 import model.Player;
 import processing.core.PApplet;
 
@@ -42,7 +43,7 @@ public class DisplayHandler {
 			}
 			
 		}
-		for(Enemy e: dataController.getEnemies()) {
+		for(GameObject e: dataController.getEnemies()) {
 			drawEnemy(e);
 		}
 	}
@@ -62,7 +63,7 @@ public class DisplayHandler {
 		world.ellipse(bullet.getX(), bullet.getY(), 2 * bullet.getSize(), 2 * bullet.getSize());
 	}
 	
-	public void drawEnemy(Enemy enemy) {
+	public void drawEnemy(GameObject enemy) {
 		world.fill(enemy.getRGB(0), enemy.getRGB(1), enemy.getRGB(2));
 		world.ellipse(enemy.getX(), enemy.getY(), 2 * enemy.getSize(),  2 * enemy.getSize());
 	}

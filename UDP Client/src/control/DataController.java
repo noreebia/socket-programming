@@ -23,7 +23,7 @@ public class DataController {
 		return data;
 	}
 	
-	public ArrayList<Enemy> getEnemies(){
+	public ArrayList<GameObject> getEnemies(){
 		return data.enemies;
 	}
 }

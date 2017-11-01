@@ -91,7 +91,7 @@ public class World extends PApplet{
 	}
 	
 	public void setup() {
-		strokeWeight((float) 1.5);
+		strokeWeight(1);
 		stroke(0);
 	}
 	

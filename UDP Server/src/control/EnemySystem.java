@@ -6,7 +6,9 @@ import java.util.Random;
 import model.*;
 public class EnemySystem {
 	DataController dataController;
-	ArrayList<Enemy> enemies;
+	
+	ArrayList<Enemy> originals = new ArrayList<Enemy>();
+	ArrayList<GameObject> shadows;
 	
 	float speed = 1;
 	int offset = 150;
@@ -18,24 +20,41 @@ public class EnemySystem {
 	}
 
 	public void resetEnemies(int numOfEnemies) {
+		originals = new ArrayList<Enemy>();
 		dataController.createNewEnemyArrayList();
-		enemies = dataController.getEnemies();
+		shadows = dataController.getEnemies();
 		
 		int i;
 		for(i=0; i< numOfEnemies; i++) {
-			enemies.add(new Enemy(rand.nextInt(1200) + 1, rand.nextInt(800) + 1));
+			float spawnPointX = rand.nextInt(1200) + 1;
+			float spawnPointY = rand.nextInt(800) + 1;
+			originals.add(new Enemy(spawnPointX, spawnPointY));
+			
+			shadows.add(new GameObject(spawnPointX, spawnPointY));
+			shadows.get(i).setRGB((short)255, (short)128, (short)0);
+		}
+	}
+	
+	public void updateShadows() {
+		if(originals.size() == shadows.size()) {
+			int i;
+			for(i = 0; i < originals.size(); i++) {
+				shadows.get(i).setX(originals.get(i).getX());
+				shadows.get(i).setY(originals.get(i).getY());
+			}
 		}
 	}
 	
 	public void run() {
 		moveEnemiesRight();
+		updateShadows();
 		//handleBulletEnemyCollision();
 	}
 	
 	public void handleBulletEnemyCollision() {		
 		for(Player p: dataController.getPlayers()) {
 			for(Bullet b: p.getBullets()) {
-				for(Enemy e: enemies) {
+				for(GameObject e: shadows) {
 					if(getDistance(e, b) <= b.getSize() + e.getSize()) {
 						//e.setX(-offset);
 						respawnEnemy(e);
@@ -46,10 +65,11 @@ public class EnemySystem {
 	}
 	
 	public void respawnEnemy(int i) {
-		this.enemies.get(i).setX(-offset);
+		this.originals.get(i).setX(-offset);
+		//this.shadows.get(i).setX(-offset);
 	}
 	
-	public void respawnEnemy(Enemy enemy) {
+	public void respawnEnemy(GameObject enemy) {
 		enemy.setX(-offset);
 	}
 	
@@ -61,15 +81,23 @@ public class EnemySystem {
 	}
 	
 	public void moveEnemiesRight() {
-		for(Enemy e: enemies) {
+		for(Enemy e: originals) {
+			e.move(e.getSpeed(), 0);
+			if(e.getX() > 1200 + offset) {
+				e.setX(-offset);
+			}
+		}
+		/*
+		for(GameObject e: shadows) {
 			e.move(speed, 0);
 			if(e.getX() > 1200 + offset) {
 				e.setX(-offset);
 			}
 		}
+		*/
 	}
 	
-	public ArrayList<Enemy> getEnemies(){
-		return enemies;
+	public ArrayList<GameObject> getShadows(){
+		return shadows;
 	}
 }

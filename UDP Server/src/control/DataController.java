@@ -28,7 +28,7 @@ public class DataController {
 		return data.players;
 	}
 	
-	public ArrayList<Enemy> getEnemies(){
+	public ArrayList<GameObject> getEnemies(){
 		return data.enemies;
 	}
 	
@@ -37,6 +37,6 @@ public class DataController {
 	}
 	
 	public void createNewEnemyArrayList() {
-		data.enemies = new ArrayList<Enemy>();
+		data.enemies = new ArrayList<GameObject>();
 	}
 }
