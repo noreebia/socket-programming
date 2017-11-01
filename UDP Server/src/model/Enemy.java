@@ -3,7 +3,8 @@ package model;
 public class Enemy extends GameObject {
 
 	int hp;
-	float velocityX, velocityY; 
+	float velocityX = 0;
+	float velocityY = 0; 
 	float speed = 1;
 	
 	public Enemy(float x, float y) {
@@ -15,12 +16,12 @@ public class Enemy extends GameObject {
 		float dy = y - this.getY();
 		
 		float mag = (float) Math.sqrt( Math.pow(dx, 2) + Math.pow(dy, 2) );
-		setVelocityX(dx/mag + speed);
-		setVelocityY(dy/mag + speed);
+		setVelocityX(dx/mag * speed);
+		setVelocityY(dy/mag * speed);
 	}
 	
 	public void moveToDestination() {
-		this.move(velocityX, velocityX);
+		this.move(velocityX, velocityY);
 	}
 	
 	public void setVelocityX(float velocityX) {

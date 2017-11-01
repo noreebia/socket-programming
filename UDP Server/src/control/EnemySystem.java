@@ -35,6 +35,14 @@ public class EnemySystem {
 		}
 	}
 	
+	public void run() {
+		//moveEnemiesRight();
+		setTargetsForEnemies();
+		moveEnemiesTowardsDestination();
+		updateShadows();
+		//handleBulletEnemyCollision();
+	}
+	
 	public void updateShadows() {
 		if(originals.size() == shadows.size()) {
 			int i;
@@ -45,10 +53,34 @@ public class EnemySystem {
 		}
 	}
 	
-	public void run() {
-		moveEnemiesRight();
-		updateShadows();
-		//handleBulletEnemyCollision();
+	public void setTargetsForEnemies() {
+		if(dataController.getPlayers().size() > 0) {
+			for(Enemy e: originals) {
+				
+				int randomNum = rand.nextInt(dataController.getPlayers().size());
+				System.out.println("random number: " + randomNum);
+				e.setDestination(getXLocationOfPlayer(randomNum), getYLocationOfPlayer(randomNum));
+				
+				//e.setDestination(getXLocationOfPlayer(0), getYLocationOfPlayer(0));
+
+			}
+		}
+	}
+	
+	public void moveEnemiesTowardsDestination() {
+		for(Enemy e:originals) {
+			if(e.getVelocityX() != 0 && e.getVelocityY() != 0) {
+				e.moveToDestination();
+			}
+		}
+	}
+	
+	public float getXLocationOfPlayer(int i) {
+		return dataController.getPlayers().get(i).getX();
+	}
+	
+	public float getYLocationOfPlayer(int i) {
+		return dataController.getPlayers().get(i).getY();
 	}
 	
 	public void handleBulletEnemyCollision() {		
