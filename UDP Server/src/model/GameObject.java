@@ -60,7 +60,7 @@ public class GameObject implements Serializable{
 	}
 	
 	public boolean isOutOfMap() {
-		if(x < -size * 2 || x > 1200 + size * 2 || y < -size*2 || y > 800 + size*2) {
+		if(x < -(size * 2 + 100) || x > 1200 + (size * 2 +100)|| y < -(size*2 + 100) || y > (800 + size*2 + 100)) {
 			return true;
 		}
 		return false;

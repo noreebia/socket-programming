@@ -54,7 +54,8 @@ public class InputHandlingThread implements Runnable{
 				System.out.println("number of player bullets: " + temp.getBullets().size());
 				
 				for(Integer i: temp.getHitEnemies()) {
-					enemySystem.respawnEnemy(i);
+					//enemySystem.respawnEnemy(i);
+					enemySystem.getOriginals().get(i).getHit();
 				}
 				
 			} catch (ClassNotFoundException e) {

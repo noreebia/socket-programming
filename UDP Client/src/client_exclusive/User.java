@@ -7,7 +7,7 @@ import processing.core.PApplet;
 
 public class User extends GameObject {
 	PApplet world;
-	float speed = 4;
+	float speed = 3;
 	public short directionModifier = 0;
 	double angle;
 	boolean[] moving = new boolean[4];
@@ -20,6 +20,7 @@ public class User extends GameObject {
 		
 	public User(PApplet world){
 		this.world = world;
+		//setXY(1200, 800);
 		setRGB( (short)0,(short)255,(short)255);
 		bulletSystem = new BulletSystem(world, this);
 	}

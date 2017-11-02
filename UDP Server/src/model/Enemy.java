@@ -2,10 +2,11 @@ package model;
 
 public class Enemy extends GameObject {
 
-	int hp;
-	float velocityX = 0;
-	float velocityY = 0; 
+	int hp = 3;
+	float velocityX = -1;
+	float velocityY = -1; 
 	float speed = 1;
+	boolean active = true;
 	
 	public Enemy(float x, float y) {
 		super(x, y);
@@ -46,5 +47,33 @@ public class Enemy extends GameObject {
 	
 	public float getSpeed() {
 		return speed;
+	}
+	
+	public void getHit() {
+		hp -= 1;
+		if(hp <= 0) {
+			setXY(-1000, - 1000);
+			deactivate();
+		}
+	}
+	
+	public void activate() {
+		active = true;
+	}
+	
+	public void deactivate() {
+		active = false;
+	}
+	
+	public boolean isActive() {
+		return active;
+	}
+	
+	public int getHp() {
+		return hp;
+	}
+	
+	public void setHp(int hp) {
+		this.hp = hp;
 	}
 }
