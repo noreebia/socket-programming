@@ -15,18 +15,22 @@ public class DisplayHandler {
 	DataController dataController;
 	User user;
 	
-	ParticleSystem particleSystems[];
+	ParticleSystem particleSystems[] = new ParticleSystem[8];
 	
-	public DisplayHandler(PApplet world, short connectionID, DataController dataController, User user, ParticleSystem[] particleSystems) {
+	public DisplayHandler(PApplet world, short connectionID, DataController dataController, User user) {
 		this.world = world;
 		this.connectionID = connectionID;
 		this.dataController = dataController;
 		this.user = user;
-		
-		this.particleSystems = particleSystems;
+
+		int i;
+		for(i=0; i< 8; i++) {
+			particleSystems[i] = new ParticleSystem(world);
+		}
 	}
 	
 	public void run() {
+		runParticleSystems();
 		for(Player p: dataController.getPlayers()) {
 			if(p.getID()!= connectionID) {
 				System.out.println("player's id: " + p.getID());
@@ -61,6 +65,13 @@ public class DisplayHandler {
 			createExplosion(e.getX(), e.getY());
 		}
 		*/
+	}
+	
+	public void runParticleSystems() {
+		int i;
+		for(i=0; i< 8; i++) {
+			particleSystems[i].run();
+		}
 	}
 	
 	public void drawPlayer(Player player) {

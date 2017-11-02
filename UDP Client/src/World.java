@@ -39,7 +39,7 @@ public class World extends PApplet {
 
 	DisplayHandler displayHandler;
 	
-	ParticleSystem particleSystems[] = new ParticleSystem[8];
+	//ParticleSystem particleSystems[] = new ParticleSystem[8];
 
 	public World() {
 
@@ -85,18 +85,22 @@ public class World extends PApplet {
 			e.printStackTrace();
 		}
 		
+		/*
 		int i;
 		for(i=0; i<8; i++) {
 			particleSystems[i] = new ParticleSystem(this);
 		}
+		*/
 	}
 	
+	/*
 	public void runParticleSystems() {
 		int i;
 		for(i =0; i< 8; i++) {
 			particleSystems[i].run();
 		}
 	}
+	*/
 
 	public short byteArrayToShort(byte[] b) {
 		ByteBuffer bb = ByteBuffer.wrap(b);
@@ -112,7 +116,7 @@ public class World extends PApplet {
 		executor.execute(new InputHandlingThread(socket, dataController, connectionID, user));
 		ses.scheduleAtFixedRate(new OutputHandlingThread(socket, serverAddress, 50001, player), 0, 8, TimeUnit.MILLISECONDS);
 
-		displayHandler = new DisplayHandler(this, connectionID, dataController, user, particleSystems);
+		displayHandler = new DisplayHandler(this, connectionID, dataController, user);
 
 	}
 
@@ -127,7 +131,7 @@ public class World extends PApplet {
 
 		user.run();
 		user.writeInfoInto(player);
-		runParticleSystems();
+		//runParticleSystems();
 		displayHandler.run();
 	}
 

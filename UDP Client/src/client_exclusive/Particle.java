@@ -95,7 +95,7 @@ public class Particle {
 	}
 
 	public void display() {
-		world.ellipse(x, y, 2, 2);
+		world.ellipse(x, y, 3, 3);
 	}
 
 	boolean isActive() {
