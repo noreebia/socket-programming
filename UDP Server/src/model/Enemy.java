@@ -5,7 +5,7 @@ public class Enemy extends GameObject {
 	int hp = 3;
 	float velocityX = -1;
 	float velocityY = -1; 
-	float speed = 1;
+	float speed = (float) 0.8;
 	boolean active = true;
 	
 	public Enemy(float x, float y) {

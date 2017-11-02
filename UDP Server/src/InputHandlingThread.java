@@ -56,6 +56,7 @@ public class InputHandlingThread implements Runnable{
 				for(Integer i: temp.getHitEnemies()) {
 					//enemySystem.respawnEnemy(i);
 					enemySystem.getOriginals().get(i).getHit();
+					enemySystem.changeShadowColor(i);
 				}
 				
 			} catch (ClassNotFoundException e) {

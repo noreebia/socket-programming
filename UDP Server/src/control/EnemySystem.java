@@ -68,11 +68,14 @@ public class EnemySystem {
 				if (e.isActive()) {
 					if (e.getVelocityX() != -1 && e.getVelocityY() != -1) {
 						if (e.isOutOfMap()) {
-							setRandomTargetForEnemy(e);
+							//setRandomPlayerAsTarget(e);
+							setRandomPointAsTarget(e);
 						}
 						e.moveToDestination();
 					} else {
-						setRandomTargetForEnemy(e);
+						//setRandomPlayerAsTarget(e);
+						setRandomPointAsTarget(e);
+
 					}
 				}
 			}
@@ -80,8 +83,15 @@ public class EnemySystem {
 		}
 		// handleBulletEnemyCollision();
 	}
+	
+	public void setRandomPointAsTarget(Enemy e) {
+		int randomX = rand.nextInt(1200) + 1;
+		int randomY = rand.nextInt(800) + 1;
+		
+		e.setDestination(randomX, randomY);
+	}
 
-	public void setRandomTargetForEnemy(Enemy e) {
+	public void setRandomPlayerAsTarget(Enemy e) {
 		int randomNum = rand.nextInt(dataController.getPlayers().size());
 		e.setDestination(getXLocationOfPlayer(randomNum), getYLocationOfPlayer(randomNum));
 	}
@@ -93,9 +103,14 @@ public class EnemySystem {
 				shadows.get(i).setX(originals.get(i).getX());
 				shadows.get(i).setY(originals.get(i).getY());
 				
-				shadows.get(i).setRGB((short)(255 - 50 * originals.get(i).getHp() %255), (short)0, (short)0);
+				//shadows.get(i).setRGB((short)(255 - 50 * originals.get(i).getHp() %255), (short)0, (short)0);
+				//shadows.get(i).setRGB((short)(rand.nextInt(255) + 1), (short)(rand.nextInt(255) + 1), (short)(rand.nextInt(255) + 1));
 			}
 		}
+	}
+	
+	public void changeShadowColor(int i) {
+		shadows.get(i).setRGB((short)(rand.nextInt(255) + 1), (short)(rand.nextInt(255) + 1), (short)(rand.nextInt(255) + 1));
 	}
 
 	public void setTargetsForEnemies() {
