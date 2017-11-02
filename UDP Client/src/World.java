@@ -39,14 +39,12 @@ public class World extends PApplet {
 
 	DisplayHandler displayHandler;
 	
-	//ParticleSystem particleSystems[] = new ParticleSystem[8];
-
 	public World() {
 
 		System.out.println("initializing world");
 		try {
 			serverAddress = InetAddress.getByName("localhost");
-			// serverAddress = InetAddress.getByName("192.168.0.14");
+			// serverAddress = InetAddress.getByName("192.168.0.12");
 			serverPort = 50000;
 			socket = new DatagramSocket();
 		} catch (Exception e) {
@@ -84,23 +82,7 @@ public class World extends PApplet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		/*
-		int i;
-		for(i=0; i<8; i++) {
-			particleSystems[i] = new ParticleSystem(this);
-		}
-		*/
 	}
-	
-	/*
-	public void runParticleSystems() {
-		int i;
-		for(i =0; i< 8; i++) {
-			particleSystems[i].run();
-		}
-	}
-	*/
 
 	public short byteArrayToShort(byte[] b) {
 		ByteBuffer bb = ByteBuffer.wrap(b);
@@ -131,7 +113,6 @@ public class World extends PApplet {
 
 		user.run();
 		user.writeInfoInto(player);
-		//runParticleSystems();
 		displayHandler.run();
 	}
 

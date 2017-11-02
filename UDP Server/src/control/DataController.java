@@ -34,11 +34,11 @@ public class DataController {
 		return data.enemies;
 	}
 	
-	public void addExplosion(short x, short y) {
-		data.explosions.add(new Explosion(x, y));
+	public void addExplosion(float x, float y, short r, short g, short b) {
+		data.explosions.add(new GameObject(x, y,r,g,b));
 	}
 	
-	public ArrayList<Explosion> getExplosions(){
+	public ArrayList<GameObject> getExplosions(){
 		return data.explosions;
 	}
 	

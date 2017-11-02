@@ -30,7 +30,7 @@ public class DataController {
 		return data.enemies;
 	}
 	
-	public ArrayList<Explosion> getExplosions(){
+	public ArrayList<GameObject> getExplosions(){
 		return data.explosions;
 	}
 }

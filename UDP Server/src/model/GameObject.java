@@ -16,6 +16,12 @@ public class GameObject implements Serializable{
 		this.y = y;
 	}
 	
+	public GameObject(float x, float y, short r, short g, short b) {
+		this.x = x;
+		this.y = y;
+		setRGB(r,g,b);
+	}
+	
 	public void setXY(float x, float y) {
 		this.x = x;
 		this.y = y;
@@ -37,10 +43,10 @@ public class GameObject implements Serializable{
 		return this.y;
 	}
 	
-	public void setRGB(short x, short y, short z) {
-		rgb[0] = x;
-		rgb[1] = y;
-		rgb[2] = z;
+	public void setRGB(short r, short g, short b) {
+		rgb[0] = r;
+		rgb[1] = g;
+		rgb[2] = b;
 	}
 	
 	public short[] getRGB() {
