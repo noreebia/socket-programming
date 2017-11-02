@@ -15,7 +15,7 @@ public class DisplayHandler {
 	DataController dataController;
 	User user;
 
-	int numberOfParticleSystems = 10;
+	int numberOfParticleSystems = 15;
 
 	ParticleSystem particleSystems[] = new ParticleSystem[numberOfParticleSystems];
 

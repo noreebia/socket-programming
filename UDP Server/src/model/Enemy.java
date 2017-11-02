@@ -5,6 +5,8 @@ public class Enemy extends GameObject {
 	int hp = 3;
 	float velocityX = -1;
 	float velocityY = -1; 
+	float lastKnownX;
+	float lastKnownY;
 	float speed = (float) 0.8;
 	boolean active = true;
 	
@@ -50,11 +52,21 @@ public class Enemy extends GameObject {
 	}
 	
 	public void getHit() {
+		lastKnownX = x;
+		lastKnownY = y;
 		hp -= 1;
 		if(hp <= 0) {
 			setXY(-1000, - 1000);
 			deactivate();
 		}
+	}
+	
+	public float getLastKnownX() {
+		return lastKnownX;
+	}
+	
+	public float getLastKnownY() {
+		return lastKnownY;
 	}
 	
 	public void activate() {

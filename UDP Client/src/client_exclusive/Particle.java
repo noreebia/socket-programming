@@ -16,13 +16,11 @@ public class Particle {
 
 	boolean active = false;
 	
-	short r,g,b;
-
 	public Particle(PApplet world) {
 		this.world = world;
 	}
 
-	public void explode(float x, float y, short r, short g, short b) {
+	public void explode(float x, float y) {
 		if (!isActive()) {
 			setSpeed();
 			this.x = x;
@@ -30,10 +28,6 @@ public class Particle {
 			initialX = x;
 			initialY = y;
 			activate();
-			
-			this.r = r;
-			this.g= g;
-			this.b = b;
 		}
 	}
 
@@ -101,8 +95,7 @@ public class Particle {
 	}
 
 	public void display() {
-		world.fill(r,g,b);
-		world.ellipse(x, y, 10, 10);
+		world.ellipse(x, y, 3, 3);
 	}
 
 	boolean isActive() {

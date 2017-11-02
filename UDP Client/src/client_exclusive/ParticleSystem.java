@@ -8,6 +8,8 @@ public class ParticleSystem {
 	Particle particles[] = new Particle[8];
 
 	boolean active = false;
+	
+	short r,g,b;
 		
 	public ParticleSystem(PApplet world) {
 		this.world = world;
@@ -20,6 +22,7 @@ public class ParticleSystem {
 
 	public void run() {
 		if (isActive()) {
+			world.fill(r,g,b);
 			for (Particle p : particles) {
 				p.run();
 			}
@@ -30,8 +33,11 @@ public class ParticleSystem {
 	public void explodeAtPoint(float x, float y, short r, short g, short b) {
 		if (!isActive()) {
 			for (Particle p : particles) {
-				p.explode(x, y, r, g, b);
+				p.explode(x, y);
 			}
+			this.r = r;
+			this.g = g;
+			this.b =b;
 		}
 		activate();
 	}

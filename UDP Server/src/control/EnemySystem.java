@@ -100,9 +100,10 @@ public class EnemySystem {
 		if (originals.size() == shadows.size()) {
 			int i;
 			for (i = 0; i < originals.size(); i++) {
-				shadows.get(i).setX(originals.get(i).getX());
-				shadows.get(i).setY(originals.get(i).getY());
-				
+				if(originals.get(i).isActive()) {
+					shadows.get(i).setX(originals.get(i).getX());
+					shadows.get(i).setY(originals.get(i).getY());
+				}				
 				//shadows.get(i).setRGB((short)(255 - 50 * originals.get(i).getHp() %255), (short)0, (short)0);
 				//shadows.get(i).setRGB((short)(rand.nextInt(255) + 1), (short)(rand.nextInt(255) + 1), (short)(rand.nextInt(255) + 1));
 			}
