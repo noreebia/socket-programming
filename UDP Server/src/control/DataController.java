@@ -1,5 +1,7 @@
 package control;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import model.*;
 
@@ -30,6 +32,18 @@ public class DataController {
 	
 	public ArrayList<GameObject> getEnemies(){
 		return data.enemies;
+	}
+	
+	public void addExplosion(short x, short y) {
+		data.explosions.add(new Explosion(x, y));
+	}
+	
+	public ArrayList<Explosion> getExplosions(){
+		return data.explosions;
+	}
+	
+	public void clearExplosions() {
+		data.explosions.clear();
 	}
 	
 	public Data getData() {

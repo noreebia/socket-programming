@@ -13,6 +13,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import client_exclusive.DisplayHandler;
+import client_exclusive.ParticleSystem;
 import client_exclusive.User;
 import control.DataController;
 import model.*;
@@ -37,6 +38,8 @@ public class World extends PApplet {
 	ScheduledExecutorService ses = Executors.newScheduledThreadPool(2);
 
 	DisplayHandler displayHandler;
+	
+	ParticleSystem particleSystems[] = new ParticleSystem[8];
 
 	public World() {
 
@@ -81,6 +84,18 @@ public class World extends PApplet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		int i;
+		for(i=0; i<8; i++) {
+			particleSystems[i] = new ParticleSystem(this);
+		}
+	}
+	
+	public void runParticleSystems() {
+		int i;
+		for(i =0; i< 8; i++) {
+			particleSystems[i].run();
+		}
 	}
 
 	public short byteArrayToShort(byte[] b) {
@@ -97,7 +112,7 @@ public class World extends PApplet {
 		executor.execute(new InputHandlingThread(socket, dataController, connectionID, user));
 		ses.scheduleAtFixedRate(new OutputHandlingThread(socket, serverAddress, 50001, player), 0, 8, TimeUnit.MILLISECONDS);
 
-		displayHandler = new DisplayHandler(this, connectionID, dataController, user);
+		displayHandler = new DisplayHandler(this, connectionID, dataController, user, particleSystems);
 
 	}
 
@@ -112,7 +127,8 @@ public class World extends PApplet {
 
 		user.run();
 		user.writeInfoInto(player);
-		displayHandler.displayGameObjectData();
+		runParticleSystems();
+		displayHandler.run();
 	}
 
 	public void handleBulletEnemyCollision() {

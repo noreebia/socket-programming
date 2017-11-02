@@ -11,6 +11,9 @@ public class DataController {
 	}
 	
 	public void cloneData(Data data) {
+		if(data.explosions.size() > 0) {
+			this.data.explosions.addAll(data.explosions);
+		}
 		this.data.players = data.players;
 		this.data.enemies = data.enemies;
 	}
@@ -25,5 +28,9 @@ public class DataController {
 	
 	public ArrayList<GameObject> getEnemies(){
 		return data.enemies;
+	}
+	
+	public ArrayList<Explosion> getExplosions(){
+		return data.explosions;
 	}
 }
