@@ -28,20 +28,12 @@ public class DataController {
 		addPlayer(player);
 	}
 	
-	public ArrayList<Player> getPlayers(){
-		return data.players;
-	}
-	
-	public ArrayList<GameObject> getEnemies(){
-		return data.enemies;
+	public void createNewEnemyArrayList() {
+		data.enemies = new ArrayList<GameObject>();
 	}
 	
 	public void addExplosion(float x, float y, short r, short g, short b) {
 		data.explosions.add(new GameObject(x, y,r,g,b));
-	}
-	
-	public ArrayList<GameObject> getExplosions(){
-		return data.explosions;
 	}
 	
 	public void clearExplosions() {
@@ -52,7 +44,15 @@ public class DataController {
 		return data;
 	}
 	
-	public void createNewEnemyArrayList() {
-		data.enemies = new ArrayList<GameObject>();
+	public ArrayList<Player> getPlayers(){
+		return data.players;
+	}
+	
+	public ArrayList<GameObject> getEnemies(){
+		return data.enemies;
+	}
+	
+	public ArrayList<GameObject> getExplosions(){
+		return data.explosions;
 	}
 }

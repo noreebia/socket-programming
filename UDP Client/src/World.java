@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 import client_exclusive.DisplayHandler;
 import client_exclusive.ParticleSystem;
+import client_exclusive.PhysicsEngine;
 import client_exclusive.User;
 import control.DataController;
 import model.*;
@@ -39,6 +40,7 @@ public class World extends PApplet {
 	ScheduledExecutorService ses = Executors.newScheduledThreadPool(2);
 
 	DisplayHandler displayHandler;
+	PhysicsEngine physicsEngine;
 	
 	public World() {
 
@@ -93,13 +95,16 @@ public class World extends PApplet {
 	public void settings() {
 		size(1200, 800);
 		
+		/* can only do this after calling size() */
 		user.setXY(width/2, height/2);
 		player.setXY(width/2, height/2);
 		
+		/* starting executor threads */
 		executor.execute(new InputHandlingThread(socket, dataController, connectionID, user));
 		ses.scheduleAtFixedRate(new OutputHandlingThread(socket, serverAddress, 50001, player), 0, 8, TimeUnit.MILLISECONDS);
 
 		displayHandler = new DisplayHandler(this, connectionID, dataController, user);
+		physicsEngine = new PhysicsEngine(dataController, user, player);
 
 	}
 
@@ -110,58 +115,25 @@ public class World extends PApplet {
 
 	public void draw() {
 		background(255);
-		handleBulletEnemyCollision();
-		handlePlayerEnemyCollision();
-
+		
 		user.run();
 		user.writeInfoInto(player);
+
 		displayHandler.run();
+		physicsEngine.run();
 	}
 	
-	public void handlePlayerEnemyCollision() {
-		if(!user.isInvincible()) {
-			for(GameObject e: dataController.getEnemies()) {
-				if(getDistance(e, user) <= e.getSize() + user.getSize()) {
-					user.getHit();
-					return;
-				}
-			}
-		}
-	}
-
-	public void handleBulletEnemyCollision() {
-		int i;
-		for (Bullet b : user.getBullets()) {
-			for (i = 0; i < dataController.getEnemies().size(); i++) {
-				if (getDistance(b, dataController.getEnemies().get(i)) <= b.getSize()
-						+ dataController.getEnemies().get(i).getSize()) {
-					player.addHitEnemies(i);
-					b.deactivate();
-				}
-			}
-		}
-	}
-
-	public double getDistance(GameObject a, GameObject b) {
-		float xDistance = a.getX() - b.getX();
-		float yDistance = a.getY() - b.getY();
-
-		return Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
-	}
 
 	public void keyPressed() {
 		if (keyCode == UP) {
 			user.shouldFace(0, true);
 		}
-
 		if (keyCode == LEFT) {
 			user.shouldFace(1, true);
 		}
-
 		if (keyCode == DOWN) {
 			user.shouldFace(2, true);
 		}
-
 		if (keyCode == RIGHT) {
 			user.shouldFace(3, true);
 		}
@@ -186,15 +158,12 @@ public class World extends PApplet {
 		if (keyCode == UP) {
 			user.shouldFace(0, false);
 		}
-
 		if (keyCode == LEFT) {
 			user.shouldFace(1, false);
 		}
-
 		if (keyCode == DOWN) {
 			user.shouldFace(2, false);
 		}
-
 		if (keyCode == RIGHT) {
 			user.shouldFace(3, false);
 		}

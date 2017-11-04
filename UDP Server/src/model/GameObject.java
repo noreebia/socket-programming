@@ -61,7 +61,7 @@ public class GameObject implements Serializable{
 		this.size = size;
 	}
 	
-	public int getSize() {
+	public short getSize() {
 		return size;
 	}
 	

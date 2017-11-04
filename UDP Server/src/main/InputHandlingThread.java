@@ -55,7 +55,6 @@ public class InputHandlingThread implements Runnable{
 				System.out.println("number of player bullets: " + temp.getBullets().size());
 				
 				for(Integer i: temp.getHitEnemies()) {
-					//enemySystem.respawnEnemy(i);
 					enemySystem.getOriginals().get(i).getHit();
 					if(enemySystem.getOriginals().get(i).isActive()) {
 						enemySystem.changeShadowColor(i);

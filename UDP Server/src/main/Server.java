@@ -12,9 +12,12 @@ import control.EnemySystem;
 import model.Client;
 
 public class Server {
+	
 	DatagramSocket listeningSocket;
 	DatagramSocket ioSocket;
+	
 	byte[] buf = new byte[8192];
+	
 	InetAddress clientAddress;
 	int clientPort;
 
@@ -25,16 +28,11 @@ public class Server {
 	ObjectOutputStream os;
 
 	DatagramPacket packet;
-
-	Random rand = new Random();
 	
 	DataController dataController = new DataController();
 
 	EnemySystem enemySystem = new EnemySystem(dataController);
 	
-	Thread inputHandler;
-	Thread outputHandler;
-
 	ArrayList<Client> clients = new ArrayList<Client>();
 	
 	short connectionCount=0;
@@ -102,5 +100,4 @@ public class Server {
 	public void addClient(short id, InetAddress clientAddress, int clientPort) {
 		clients.add(new Client(id, clientAddress, clientPort));
 	}
-
 }

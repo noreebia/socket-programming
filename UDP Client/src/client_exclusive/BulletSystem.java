@@ -54,7 +54,7 @@ public class BulletSystem {
 			float bulletSpawnLocationY = (float) (owner.y - 1.5 * Math.cos(owner.directionModifier * Math.PI / 4) * length);
 			if (world.millis() - lastFiredTime >= reloadTime) {
 				bullets.add(new Bullet(bulletSpawnLocationX, bulletSpawnLocationY, owner.directionModifier));
-				bullets.get(bullets.size()-1).setRGB(owner.getRGB(0), owner.getRGB(1), owner.getRGB(2));
+				bullets.get(bullets.size()-1).setRGB(owner.getBulletRGB(0), owner.getBulletRGB(1), owner.getBulletRGB(2));
 				lastFiredTime = world.millis();
 			}
 		}

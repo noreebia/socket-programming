@@ -14,7 +14,7 @@ public class User extends GameObject {
 	boolean[] moving = new boolean[4];
 	boolean[] facing = new boolean[4];
 
-	float originalSpeed = 4;
+	float originalSpeed = 3;
 	float diagonalSpeed = (float) (originalSpeed / Math.sqrt(2));
 	
 	public BulletSystem bulletSystem;
@@ -22,13 +22,14 @@ public class User extends GameObject {
 	boolean invincible;
 	long timeOfHit;
 	int colorFlashCount;
+	short[] bulletRGB;
 	
 	Random rand = new Random();
 	
 	public User(PApplet world){
 		this.world = world;
-		//setXY(1200, 800);
-		setRGB( (short)0,(short)255,(short)255);
+		setRGB((short)0,(short)255,(short)255);
+		bulletRGB = rgb.clone();
 		bulletSystem = new BulletSystem(world, this);
 	}
 
@@ -191,5 +192,9 @@ public class User extends GameObject {
 	
 	public boolean isInvincible() {
 		return invincible;
+	}
+	
+	public short getBulletRGB(int i) {
+		return bulletRGB[i];
 	}
 }

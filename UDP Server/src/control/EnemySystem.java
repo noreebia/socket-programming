@@ -62,29 +62,22 @@ public class EnemySystem {
 	}
 
 	public void run() {
-		// moveEnemiesRight();
-		// setTargetsForEnemies();
-		// moveEnemiesTowardsDestination();
 		System.out.println("enemy system run method");
 		if (dataController.getPlayers().size() > 0) {
 			for (Enemy e : originals) {
 				if (e.isActive()) {
 					if (e.getVelocityX() != -1 && e.getVelocityY() != -1) {
 						if (e.isOutOfMap()) {
-							//setRandomPlayerAsTarget(e);
 							setRandomPointAsTarget(e);
 						}
-						e.moveToDestination();
 					} else {
-						//setRandomPlayerAsTarget(e);
 						setRandomPointAsTarget(e);
-
 					}
+					e.moveToDestination();
 				}
 			}
 			updateShadows();
 		}
-		// handleBulletEnemyCollision();
 	}
 	
 	public void setRandomPointAsTarget(Enemy e) {
@@ -107,28 +100,12 @@ public class EnemySystem {
 					shadows.get(i).setX(originals.get(i).getX());
 					shadows.get(i).setY(originals.get(i).getY());
 				}				
-				//shadows.get(i).setRGB((short)(255 - 50 * originals.get(i).getHp() %255), (short)0, (short)0);
-				//shadows.get(i).setRGB((short)(rand.nextInt(255) + 1), (short)(rand.nextInt(255) + 1), (short)(rand.nextInt(255) + 1));
 			}
 		}
 	}
 	
 	public void changeShadowColor(int i) {
 		shadows.get(i).setRGB((short)(rand.nextInt(255) + 1), (short)(rand.nextInt(255) + 1), (short)(rand.nextInt(255) + 1));
-	}
-
-	public void setTargetsForEnemies() {
-		if (dataController.getPlayers().size() > 0) {
-			for (Enemy e : originals) {
-
-				int randomNum = rand.nextInt(dataController.getPlayers().size());
-				System.out.println("random number: " + randomNum);
-				e.setDestination(getXLocationOfPlayer(randomNum), getYLocationOfPlayer(randomNum));
-
-				// e.setDestination(getXLocationOfPlayer(0), getYLocationOfPlayer(0));
-
-			}
-		}
 	}
 
 	public void moveEnemiesTowardsDestination() {
@@ -147,22 +124,8 @@ public class EnemySystem {
 		return dataController.getPlayers().get(i).getY();
 	}
 
-	public void handleBulletEnemyCollision() {
-		for (Player p : dataController.getPlayers()) {
-			for (Bullet b : p.getBullets()) {
-				for (GameObject e : shadows) {
-					if (getDistance(e, b) <= b.getSize() + e.getSize()) {
-						// e.setX(-offset);
-						respawnEnemy(e);
-					}
-				}
-			}
-		}
-	}
-
 	public void respawnEnemy(int i) {
 		this.originals.get(i).setX(-offset);
-		// this.shadows.get(i).setX(-offset);
 	}
 
 	public void respawnEnemy(GameObject enemy) {
@@ -174,19 +137,6 @@ public class EnemySystem {
 		float yDistance = a.getY() - b.getY();
 
 		return Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
-	}
-
-	public void moveEnemiesRight() {
-		for (Enemy e : originals) {
-			e.move(e.getSpeed(), 0);
-			if (e.getX() > 1200 + offset) {
-				e.setX(-offset);
-			}
-		}
-		/*
-		 * for(GameObject e: shadows) { e.move(speed, 0); if(e.getX() > 1200 + offset) {
-		 * e.setX(-offset); } }
-		 */
 	}
 
 	public ArrayList<GameObject> getShadows() {
