@@ -1,3 +1,4 @@
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.*;
@@ -103,17 +104,29 @@ public class World extends PApplet {
 	}
 
 	public void setup() {
-		strokeWeight(1);
+		strokeWeight((float) 1.5);
 		stroke(0);
 	}
 
 	public void draw() {
 		background(255);
 		handleBulletEnemyCollision();
+		handlePlayerEnemyCollision();
 
 		user.run();
 		user.writeInfoInto(player);
 		displayHandler.run();
+	}
+	
+	public void handlePlayerEnemyCollision() {
+		if(!user.isInvincible()) {
+			for(GameObject e: dataController.getEnemies()) {
+				if(getDistance(e, user) <= e.getSize() + user.getSize()) {
+					user.getHit();
+					return;
+				}
+			}
+		}
 	}
 
 	public void handleBulletEnemyCollision() {

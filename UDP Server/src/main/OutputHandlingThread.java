@@ -1,3 +1,4 @@
+package main;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -6,7 +7,7 @@ import java.util.ArrayList;
 
 import control.DataController;
 import control.EnemySystem;
-import model.*;
+import model.Client;
 
 public class OutputHandlingThread implements Runnable{
 		

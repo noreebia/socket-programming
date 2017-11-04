@@ -1,6 +1,7 @@
 package client_exclusive;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import model.*;
 import processing.core.PApplet;
@@ -17,7 +18,13 @@ public class User extends GameObject {
 	float diagonalSpeed = (float) (originalSpeed / Math.sqrt(2));
 	
 	public BulletSystem bulletSystem;
-		
+	
+	boolean invincible;
+	long timeOfHit;
+	int colorFlashCount;
+	
+	Random rand = new Random();
+	
 	public User(PApplet world){
 		this.world = world;
 		//setXY(1200, 800);
@@ -30,6 +37,7 @@ public class User extends GameObject {
 		move();
 		setDirection();
 		bulletSystem.run();
+		deactivateInvincibility();
 		display();
 	}
 
@@ -38,7 +46,17 @@ public class User extends GameObject {
 		world.translate(x, y);
 		setAngle();
 		world.rotate((float) angle);
-		world.fill(rgb[0], rgb[1], rgb[2]);
+		if(isInvincible()) {
+			colorFlashCount++;
+			if(colorFlashCount % 3 == 0) {
+				world.fill(rgb[0], rgb[1], rgb[2]);
+			}else {
+				world.fill(0, 0, 0);
+			}
+		}
+		else {
+			world.fill(rgb[0], rgb[1], rgb[2]);
+		}
 		world.ellipse(0, 0, size * 2, size * 2);
 		bulletSystem.display();
 		world.popMatrix();
@@ -123,6 +141,21 @@ public class User extends GameObject {
 		}
 	}
 	
+	public void getHit() {
+		if(!isInvincible()) {
+			setInvincibility(true);
+			timeOfHit = System.currentTimeMillis();
+		}
+	}
+	
+	public void deactivateInvincibility() {
+		if(isInvincible()) {
+			if(System.currentTimeMillis() - timeOfHit > 1000) {
+				setInvincibility(false);
+			}
+		}
+	}
+	
 	public ArrayList<Bullet> getBullets(){
 		return bulletSystem.getBullets();
 	}
@@ -150,5 +183,13 @@ public class User extends GameObject {
 	public void writeInfoInto(Player player) {
 		player.cloneInfoOf(this);
 		player.setDirection(directionModifier);
+	}
+	
+	public void setInvincibility(boolean invincible) {
+		this.invincible = invincible;
+	}
+	
+	public boolean isInvincible() {
+		return invincible;
 	}
 }

@@ -1,3 +1,4 @@
+package main;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -5,7 +6,7 @@ import java.net.*;
 
 import control.DataController;
 import control.EnemySystem;
-import model.*;
+import model.Player;
 
 public class InputHandlingThread implements Runnable{
 

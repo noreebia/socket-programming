@@ -3,7 +3,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import model.*;
+import model.Data;
+import model.GameObject;
+import model.Player;
 
 public class DataController {
 	

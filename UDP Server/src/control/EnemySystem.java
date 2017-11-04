@@ -4,7 +4,10 @@ import java.util.ArrayList;
 
 import java.util.Random;
 
-import model.*;
+import model.Bullet;
+import model.Enemy;
+import model.GameObject;
+import model.Player;
 
 public class EnemySystem {
 	DataController dataController;
@@ -54,7 +57,7 @@ public class EnemySystem {
 			originals.add(new Enemy(spawnPointX, spawnPointY));
 
 			shadows.add(new GameObject(spawnPointX, spawnPointY));
-			shadows.get(i).setRGB((short) 255, (short) 128, (short) 0);
+			shadows.get(i).setRGB((short) (rand.nextInt(255) + 1), (short) (rand.nextInt(255) + 1), (short) (rand.nextInt(255) + 1));
 		}
 	}
 

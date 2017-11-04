@@ -1,3 +1,4 @@
+package main;
 import java.io.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -8,7 +9,7 @@ import java.util.concurrent.*;
 
 import control.DataController;
 import control.EnemySystem;
-import model.*;
+import model.Client;
 
 public class Server {
 	DatagramSocket listeningSocket;
