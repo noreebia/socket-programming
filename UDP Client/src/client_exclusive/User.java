@@ -22,14 +22,14 @@ public class User extends GameObject {
 	boolean invincible;
 	long timeOfHit;
 	int colorFlashCount;
-	short[] bulletRGB;
+	short[] backupRGB;
 	
 	Random rand = new Random();
 	
 	public User(PApplet world){
 		this.world = world;
 		setRGB((short)0,(short)255,(short)255);
-		bulletRGB = rgb.clone();
+		backupRGB = rgb.clone();
 		bulletSystem = new BulletSystem(world, this);
 	}
 
@@ -47,17 +47,7 @@ public class User extends GameObject {
 		world.translate(x, y);
 		setAngle();
 		world.rotate((float) angle);
-		if(isInvincible()) {
-			colorFlashCount++;
-			if(colorFlashCount % 3 == 0) {
-				world.fill(rgb[0], rgb[1], rgb[2]);
-			}else {
-				world.fill(0, 0, 0);
-			}
-		}
-		else {
-			world.fill(rgb[0], rgb[1], rgb[2]);
-		}
+		world.fill(rgb[0], rgb[1], rgb[2]);
 		//world.ellipse(0, 0, size * 2, size * 2);
 		world.beginShape();
 	    world.vertex(0,-size-5);
@@ -157,7 +147,14 @@ public class User extends GameObject {
 	
 	public void deactivateInvincibility() {
 		if(isInvincible()) {
+			colorFlashCount++;
+			if(colorFlashCount % 3 == 0) {
+				setRGB(getBackupRGB(0), getBackupRGB(1), getBackupRGB(2));
+			}else {
+				setRGB((short)0,(short)0,(short)0);
+			}
 			if(System.currentTimeMillis() - timeOfHit > 1000) {
+				setRGB(getBackupRGB(0), getBackupRGB(1), getBackupRGB(2));
 				setInvincibility(false);
 			}
 		}
@@ -200,7 +197,7 @@ public class User extends GameObject {
 		return invincible;
 	}
 	
-	public short getBulletRGB(int i) {
-		return bulletRGB[i];
+	public short getBackupRGB(int i) {
+		return backupRGB[i];
 	}
 }
