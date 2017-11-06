@@ -24,6 +24,7 @@ import processing.core.PApplet;
 public class World extends PApplet {
 	InetAddress serverAddress;
 	int serverPort;
+	
 	DatagramSocket socket;
 	DatagramPacket packet;
 
@@ -43,7 +44,6 @@ public class World extends PApplet {
 	PhysicsEngine physicsEngine;
 	
 	public World() {
-
 		System.out.println("initializing world");
 		try {
 			serverAddress = InetAddress.getByName("localhost");
@@ -73,23 +73,9 @@ public class World extends PApplet {
 			connectionID = byteArrayToShort(packet.getData());
 			player.setID((short) connectionID);
 			System.out.println("My ID: " + connectionID);
-
-		
-			/*
-			executor.execute(new InputHandlingThread(socket, dataController, connectionID, user));
-			ses.scheduleAtFixedRate(new OutputHandlingThread(socket, serverAddress, 50001, player), 0, 8, TimeUnit.MILLISECONDS);
-
-			displayHandler = new DisplayHandler(this, connectionID, dataController, user);
-			*/
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public short byteArrayToShort(byte[] b) {
-		ByteBuffer bb = ByteBuffer.wrap(b);
-		return bb.getShort();
 	}
 
 	public void settings() {
@@ -97,7 +83,7 @@ public class World extends PApplet {
 		
 		/* can only do this after calling size() */
 		user.setXY(width/2, height/2);
-		player.setXY(width/2, height/2);
+		initializePlayer();
 		
 		/* starting executor threads */
 		executor.execute(new InputHandlingThread(socket, dataController, connectionID, user));
@@ -106,6 +92,11 @@ public class World extends PApplet {
 		displayHandler = new DisplayHandler(this, connectionID, dataController, user);
 		physicsEngine = new PhysicsEngine(dataController, user, player);
 
+	}
+	
+	public void initializePlayer() {
+		player.setX(user.getX());
+		player.setY(user.getY());
 	}
 
 	public void setup() {
@@ -123,6 +114,10 @@ public class World extends PApplet {
 		physicsEngine.run();
 	}
 	
+	public short byteArrayToShort(byte[] b) {
+		ByteBuffer bb = ByteBuffer.wrap(b);
+		return bb.getShort();
+	}
 
 	public void keyPressed() {
 		if (keyCode == UP) {

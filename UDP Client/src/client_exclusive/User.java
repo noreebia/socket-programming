@@ -58,8 +58,14 @@ public class User extends GameObject {
 		else {
 			world.fill(rgb[0], rgb[1], rgb[2]);
 		}
-		world.ellipse(0, 0, size * 2, size * 2);
-		bulletSystem.display();
+		//world.ellipse(0, 0, size * 2, size * 2);
+		world.beginShape();
+	    world.vertex(0,-size-5);
+	    world.vertex(-size,5);
+	    world.vertex(0, 15);
+	    world.vertex(size,5);
+	    world.endShape(world.CLOSE);
+		//bulletSystem.display();
 		world.popMatrix();
 	}
 

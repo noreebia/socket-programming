@@ -36,7 +36,6 @@ public class OutputHandlingThread implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	public void run() {

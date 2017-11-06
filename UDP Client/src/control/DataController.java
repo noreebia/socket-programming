@@ -10,7 +10,7 @@ public class DataController {
 	public DataController(){
 	}
 	
-	public void cloneData(Data data) {
+	public void updateData(Data data) {
 		if(data.explosions.size() > 0) {
 			this.data.explosions.addAll(data.explosions);
 		}

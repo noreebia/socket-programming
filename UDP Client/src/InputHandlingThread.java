@@ -16,6 +16,7 @@ public class InputHandlingThread implements Runnable {
 
 	DatagramPacket packet;
 	DatagramSocket socket;
+
 	ByteArrayInputStream bais;
 	ObjectInputStream is;
 
@@ -35,35 +36,25 @@ public class InputHandlingThread implements Runnable {
 
 	public void run() {
 		while (true) {
-			packet = new DatagramPacket(buf, buf.length);
 			try {
+				packet = new DatagramPacket(buf, buf.length);
 				socket.receive(packet);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 
-			System.out.println("Received packet");
-			bais = new ByteArrayInputStream(packet.getData());
-
-			try {
+				System.out.println("Received packet");
+				bais = new ByteArrayInputStream(packet.getData());
 				is = new ObjectInputStream(bais);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			try {
-				temp = (Data) is.readObject();
-				dataController.cloneData(temp);
+
+				try {
+					temp = (Data) is.readObject();
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+					System.exit(1);
+				}
+				dataController.updateData(temp);
 				System.out.println("data received and cloned");
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch(Exception e) {
-				e.printStackTrace();
-			}
-			try {
+
 				is.close();
-			} catch (IOException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}

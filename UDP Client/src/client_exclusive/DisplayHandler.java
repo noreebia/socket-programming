@@ -38,7 +38,9 @@ public class DisplayHandler {
 
 		int i;
 		for (i = 0; i < dataController.getExplosions().size(); i++) {
-			createExplosion(dataController.getExplosions().get(i).getX(), dataController.getExplosions().get(i).getY(), dataController.getExplosions().get(i).getRGB(0), dataController.getExplosions().get(i).getRGB(1), dataController.getExplosions().get(i).getRGB(2));
+			createExplosion(dataController.getExplosions().get(i).getX(), dataController.getExplosions().get(i).getY(),
+					dataController.getExplosions().get(i).getRGB(0), dataController.getExplosions().get(i).getRGB(1),
+					dataController.getExplosions().get(i).getRGB(2));
 			dataController.getExplosions().remove(i);
 		}
 	}
@@ -100,15 +102,11 @@ public class DisplayHandler {
 	}
 
 	public void createExplosion(float x, float y, short r, short g, short b) {
-		try {
-			for (ParticleSystem p : particleSystems) {
-				if (!p.isActive()) {
-					p.explodeAtPoint(x, y, r, g, b);
-					return;
-				}
+		for (ParticleSystem p : particleSystems) {
+			if (!p.isActive()) {
+				p.explodeAtPoint(x, y, r, g, b);
+				return;
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 }
