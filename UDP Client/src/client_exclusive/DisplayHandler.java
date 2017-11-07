@@ -3,7 +3,6 @@ package client_exclusive;
 import control.DataController;
 import model.Bullet;
 import model.Enemy;
-import model.Explosion;
 import model.GameObject;
 import model.Player;
 import processing.core.PApplet;
@@ -108,5 +107,9 @@ public class DisplayHandler {
 				return;
 			}
 		}
+	}
+	
+	public void displayGameStats() {
+		
 	}
 }

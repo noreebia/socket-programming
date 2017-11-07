@@ -12,6 +12,7 @@ public class DataController {
 	private Data data = new Data();
 	
 	public DataController() {
+	
 	}
 	
 	public void addPlayer(Player player) {
@@ -54,5 +55,13 @@ public class DataController {
 	
 	public ArrayList<GameObject> getExplosions(){
 		return data.explosions;
+	}
+	
+	public void increaseLevel() {
+		this.data.level++;
+	}
+	
+	public short getLevel() {
+		return data.level;
 	}
 }

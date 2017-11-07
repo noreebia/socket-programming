@@ -1,6 +1,7 @@
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -46,6 +47,9 @@ public class InputHandlingThread implements Runnable {
 
 				try {
 					temp = (Data) is.readObject();
+				} catch (InvalidClassException e) {
+					e.printStackTrace();
+					System.exit(1);
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 					System.exit(1);

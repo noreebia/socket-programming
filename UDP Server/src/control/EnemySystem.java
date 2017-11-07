@@ -18,12 +18,22 @@ public class EnemySystem {
 	float speed = 1;
 	int offset = 150;
 	
+	int screenWidth = 1200;
+	int screenHeight = 800;
+	
 	int enemySpawnLocationWidth = 150;
+	
+	boolean everyEnemyDead;
 
 	Random rand = new Random();
 
 	public EnemySystem(DataController dataController) {
 		this.dataController = dataController;
+	}
+	
+	public void increaseLevel() {
+		dataController.increaseLevel();
+		resetEnemies(200);
 	}
 
 	public void resetEnemies(int numOfEnemies) {
@@ -38,20 +48,20 @@ public class EnemySystem {
 			int spawnDirection = rand.nextInt(4) + 1;
 			switch(spawnDirection) {
 			case 1:
-				spawnPointX = rand.nextInt(1200) + 1;
+				spawnPointX = rand.nextInt(screenWidth) + 1;
 				spawnPointY = rand.nextInt(enemySpawnLocationWidth) + 1;
 				break;
 			case 2:
-				spawnPointX = rand.nextInt(1200 - (1200 - enemySpawnLocationWidth) + 1) + (1200 - enemySpawnLocationWidth);
-				spawnPointY = rand.nextInt(800) + 1;
+				spawnPointX = rand.nextInt(screenWidth - (screenWidth - enemySpawnLocationWidth) + 1) + (screenWidth - enemySpawnLocationWidth);
+				spawnPointY = rand.nextInt(screenHeight) + 1;
 				break;
 			case 3:
-				spawnPointX = rand.nextInt(1200) + 1;
-				spawnPointY = rand.nextInt(800 - (800 - enemySpawnLocationWidth) +1) + (800 - enemySpawnLocationWidth);
+				spawnPointX = rand.nextInt(screenWidth) + 1;
+				spawnPointY = rand.nextInt(screenHeight - (screenHeight - enemySpawnLocationWidth) +1) + (screenHeight - enemySpawnLocationWidth);
 				break;
 			case 4:
 				spawnPointX = rand.nextInt(enemySpawnLocationWidth) + 1;
-				spawnPointY = rand.nextInt(800) + 1;
+				spawnPointY = rand.nextInt(screenHeight) + 1;
 				break;
 			}
 			originals.add(new Enemy(spawnPointX, spawnPointY));
@@ -67,7 +77,12 @@ public class EnemySystem {
 			for (Enemy e : originals) {
 				if (e.isActive()) {
 					if (e.getVelocityX() != -1 && e.getVelocityY() != -1) {
+						/*
 						if (e.isOutOfMap()) {
+							setRandomPointAsTarget(e);
+						}
+						*/
+						if (e.isOutOfMap(screenWidth, screenHeight)) {
 							setRandomPointAsTarget(e);
 						}
 					} else {
@@ -77,12 +92,15 @@ public class EnemySystem {
 				}
 			}
 			updateShadows();
+			if(isEveryEnemyDead()) {
+				increaseLevel();
+			}
 		}
 	}
 	
 	public void setRandomPointAsTarget(Enemy e) {
-		int randomX = rand.nextInt(1200) + 1;
-		int randomY = rand.nextInt(800) + 1;
+		int randomX = rand.nextInt(screenWidth) + 1;
+		int randomY = rand.nextInt(screenHeight) + 1;
 		
 		e.setDestination(randomX, randomY);
 	}
@@ -93,12 +111,16 @@ public class EnemySystem {
 	}
 
 	public void updateShadows() {
+		everyEnemyDead = true;
 		if (originals.size() == shadows.size()) {
 			int i;
 			for (i = 0; i < originals.size(); i++) {
 				if(originals.get(i).isActive()) {
 					shadows.get(i).setX(originals.get(i).getX());
 					shadows.get(i).setY(originals.get(i).getY());
+					if(isEveryEnemyDead()) {
+						everyEnemyDead = false;
+					}
 				}				
 			}
 		}
@@ -145,5 +167,9 @@ public class EnemySystem {
 
 	public ArrayList<Enemy> getOriginals() {
 		return originals;
+	}
+	
+	public boolean isEveryEnemyDead() {
+		return everyEnemyDead;
 	}
 }

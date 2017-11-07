@@ -64,7 +64,12 @@ public class BulletSystem {
 		int i;
 		for(i =0; i < bullets.size(); i++) {
 			moveBullet(bullets.get(i));
+			/*
 			if( bullets.get(i).isOutOfMap() || !bullets.get(i).isActive()) {
+				bullets.remove(i);
+			}
+			*/
+			if( bullets.get(i).isOutOfMap(world.width, world.height) || !bullets.get(i).isActive()) {
 				bullets.remove(i);
 			}
 		}

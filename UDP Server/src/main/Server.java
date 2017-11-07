@@ -42,7 +42,7 @@ public class Server {
 	
 	long startTime;
 	public Server() {
-		enemySystem.resetEnemies(200);
+		enemySystem.resetEnemies(1);
 
 		startTime = System.currentTimeMillis();
 		try {
