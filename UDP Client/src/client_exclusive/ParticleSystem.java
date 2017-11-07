@@ -68,5 +68,4 @@ public class ParticleSystem {
 	public void deactivate() {
 		active = false;
 	}
-
 }

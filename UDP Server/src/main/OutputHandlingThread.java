@@ -24,8 +24,7 @@ public class OutputHandlingThread implements Runnable {
 
 	EnemySystem enemySystem;
 
-	public OutputHandlingThread(DatagramSocket ioSocket, DataController dataController, ArrayList<Client> clients,
-			EnemySystem enemySystem) {
+	public OutputHandlingThread(DatagramSocket ioSocket, DataController dataController, ArrayList<Client> clients, EnemySystem enemySystem) {
 		System.out.println("OutputHandlingThread created");
 		this.ioSocket = ioSocket;
 		try {

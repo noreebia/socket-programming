@@ -33,7 +33,7 @@ public class EnemySystem {
 	
 	public void increaseLevel() {
 		dataController.increaseLevel();
-		resetEnemies(200);
+		resetEnemies(dataController.getLevel() * 10);
 	}
 
 	public void resetEnemies(int numOfEnemies) {

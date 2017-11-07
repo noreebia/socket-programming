@@ -15,7 +15,7 @@ public class BulletSystem {
 	float reloadTime = 100;
 	
 	float bulletSpeedModifier;
-	float bulletSpeedModifierStraight = 10;
+	float bulletSpeedModifierStraight = 15;
 	float bulletSpeedModifierDiagonal = (float) (bulletSpeedModifierStraight / Math.sqrt(2));
 	float bulletSpeedX, bulletSpeedY;
 	

@@ -91,7 +91,6 @@ public class World extends PApplet {
 
 		displayHandler = new DisplayHandler(this, connectionID, dataController, user);
 		physicsEngine = new PhysicsEngine(dataController, user, player);
-
 	}
 	
 	public void initializePlayer() {

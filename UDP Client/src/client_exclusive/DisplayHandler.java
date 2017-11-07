@@ -2,7 +2,6 @@ package client_exclusive;
 
 import control.DataController;
 import model.Bullet;
-import model.Enemy;
 import model.GameObject;
 import model.Player;
 import processing.core.PApplet;
@@ -13,10 +12,13 @@ public class DisplayHandler {
 	short connectionID;
 	DataController dataController;
 	User user;
-
+	
 	int numberOfParticleSystems = 15;
-
 	ParticleSystem particleSystems[] = new ParticleSystem[numberOfParticleSystems];
+	
+	//boolean levelChanged;
+	long timeOfLevelChange;
+	int durationOfLevelChangeDisplay = 1000;
 
 	public DisplayHandler(PApplet world, short connectionID, DataController dataController, User user) {
 		this.world = world;
@@ -42,6 +44,8 @@ public class DisplayHandler {
 					dataController.getExplosions().get(i).getRGB(2));
 			dataController.getExplosions().remove(i);
 		}
+		displayGameStats();
+		displayLevelChange();
 	}
 
 	public void runParticleSystems() {
@@ -71,7 +75,6 @@ public class DisplayHandler {
 				drawBullet(b);
 			}
 		}
-
 	}
 
 	public void drawPlayer(Player player) {
@@ -110,6 +113,39 @@ public class DisplayHandler {
 	}
 	
 	public void displayGameStats() {
-		
+		world.fill(0);
+		world.textSize(26);
+		float widthOfString = world.textWidth("Level " + dataController.getLevel());
+		world.text("Level " + dataController.getLevel(), world.width/2 - widthOfString/2, 30);
 	}
+	
+	public void displayLevelChange() {
+		if(dataController.hasLevelChanged()) {		
+			dataController.setLevelChanged(false);
+			timeOfLevelChange = System.currentTimeMillis();
+			
+			/*
+			if(System.currentTimeMillis() - timeOfLevelChange >= durationOfLevelChangeDisplay) {
+				dataController.setLevelChanged(false);
+			}
+			*/
+		}
+		else if(System.currentTimeMillis() - timeOfLevelChange <= durationOfLevelChangeDisplay){
+			world.fill(0);
+			world.textSize(70);
+			float widthOfString = world.textWidth("Level " + dataController.getLevel());
+			world.text("Level "+ dataController.getLevel(), world.width/2 - widthOfString/2, world.height/2 - 35);
+		}
+	}
+	
+	/*
+	public void setLevelChanged(boolean levelChanged) {
+		this.levelChanged = levelChanged;
+		timeOfLevelChange = System.currentTimeMillis();
+	}
+	
+	public boolean hasLevelChanged() {
+		return levelChanged;
+	}
+	*/
 }

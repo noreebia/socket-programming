@@ -7,7 +7,7 @@ public class Enemy extends GameObject {
 	float velocityY = -1; 
 	float lastKnownX;
 	float lastKnownY;
-	float speed = (float) 0.8;
+	float speed = (float) 2;
 	boolean active = true;
 	
 	public Enemy(float x, float y) {

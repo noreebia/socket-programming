@@ -14,7 +14,7 @@ public class User extends GameObject {
 	boolean[] moving = new boolean[4];
 	boolean[] facing = new boolean[4];
 
-	float originalSpeed = 3;
+	float originalSpeed = 5;
 	float diagonalSpeed = (float) (originalSpeed / Math.sqrt(2));
 	
 	public BulletSystem bulletSystem;

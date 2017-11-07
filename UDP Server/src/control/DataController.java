@@ -12,7 +12,7 @@ public class DataController {
 	private Data data = new Data();
 	
 	public DataController() {
-	
+		setLevel(1);
 	}
 	
 	public void addPlayer(Player player) {
@@ -58,7 +58,11 @@ public class DataController {
 	}
 	
 	public void increaseLevel() {
-		this.data.level++;
+		setLevel(getLevel() + 1);
+	}
+	
+	public void setLevel(int level) {
+		data.level = (short) level;
 	}
 	
 	public short getLevel() {
