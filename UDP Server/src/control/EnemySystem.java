@@ -33,7 +33,7 @@ public class EnemySystem {
 	
 	public void increaseLevel() {
 		dataController.increaseLevel();
-		resetEnemies(dataController.getLevel() * 10);
+		resetEnemies(dataController.getLevel() * (10 + dataController.getPlayers().size()));
 	}
 
 	public void resetEnemies(int numOfEnemies) {
@@ -77,11 +77,6 @@ public class EnemySystem {
 			for (Enemy e : originals) {
 				if (e.isActive()) {
 					if (e.getVelocityX() != -1 && e.getVelocityY() != -1) {
-						/*
-						if (e.isOutOfMap()) {
-							setRandomPointAsTarget(e);
-						}
-						*/
 						if (e.isOutOfMap(screenWidth, screenHeight)) {
 							setRandomPointAsTarget(e);
 						}
