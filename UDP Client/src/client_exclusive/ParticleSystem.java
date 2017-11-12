@@ -22,6 +22,7 @@ public class ParticleSystem {
 
 	public void run() {
 		if (isActive()) {
+			world.stroke(r,g,b);
 			world.fill(r,g,b);
 			for (Particle p : particles) {
 				p.run();

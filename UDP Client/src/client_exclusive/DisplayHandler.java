@@ -33,6 +33,7 @@ public class DisplayHandler {
 	}
 
 	public void run() {
+		displayUser();
 		runParticleSystems();
 		drawPlayersAndBullets();
 		drawEnemies();
@@ -46,6 +47,25 @@ public class DisplayHandler {
 		}
 		displayGameStats();
 		displayLevelChange();
+	}
+	
+	public void displayUser() {
+		world.stroke(user.getRGB(0), user.getRGB(1), user.getRGB(2));
+		world.pushMatrix();
+		world.translate(user.getX(), user.getY());
+		user.setAngle();
+		world.rotate((float)  user.getAngle());
+		world.fill(user.getRGB(0), user.getRGB(1), user.getRGB(2));
+		// world.ellipse(0, 0, size * 2, size * 2);
+		world.beginShape();
+		world.vertex(0, -user.getSize()- 5);
+		world.vertex(-user.getSize(), 5);
+		world.vertex(0, 15);
+		world.vertex(user.getSize(), 5);
+		world.endShape(world.CLOSE);
+		// bulletSystem.display();
+		world.popMatrix();
+
 	}
 
 	public void runParticleSystems() {
@@ -71,13 +91,16 @@ public class DisplayHandler {
 				world.ellipse(p.getX(), p.getY(), 5, 5);
 			}
 			// System.out.println("Num of player bullets: " + p.getBullets().size());
+			/*
 			for (Bullet b : p.getBullets()) {
 				drawBullet(b);
 			}
+			*/
 		}
 	}
 
 	public void drawPlayer(Player player) {
+		world.stroke(player.getRGB(0), player.getRGB(1), player.getRGB(2));
 		world.pushMatrix();
 		world.translate(player.getX(), player.getY());
 		world.rotate(world.PI / 4 * player.getDirection());
@@ -88,6 +111,7 @@ public class DisplayHandler {
 	}
 
 	public void drawBullet(Bullet bullet) {
+		world.stroke(bullet.getRGB(0), bullet.getRGB(1), bullet.getRGB(2));
 		world.fill(bullet.getRGB(0), bullet.getRGB(1), bullet.getRGB(2));
 		world.ellipse(bullet.getX(), bullet.getY(), 2 * bullet.getSize(), 2 * bullet.getSize());
 	}
@@ -99,6 +123,7 @@ public class DisplayHandler {
 	}
 
 	public void drawEnemy(GameObject enemy) {
+		world.stroke(enemy.getRGB(0), enemy.getRGB(1), enemy.getRGB(2));
 		world.fill(enemy.getRGB(0), enemy.getRGB(1), enemy.getRGB(2));
 		world.ellipse(enemy.getX(), enemy.getY(), 2 * enemy.getSize(), 2 * enemy.getSize());
 	}
@@ -113,7 +138,7 @@ public class DisplayHandler {
 	}
 	
 	public void displayGameStats() {
-		world.fill(0);
+		world.fill(255);
 		world.textSize(26);
 		float widthOfString = world.textWidth("Level " + dataController.getLevel());
 		world.text("Level " + dataController.getLevel(), world.width/2 - widthOfString/2, 30);
@@ -131,7 +156,7 @@ public class DisplayHandler {
 			*/
 		}
 		else if(System.currentTimeMillis() - timeOfLevelChange <= durationOfLevelChangeDisplay){
-			world.fill(0);
+			world.fill(255);
 			world.textSize(70);
 			float widthOfString = world.textWidth("Level " + dataController.getLevel());
 			world.text("Level "+ dataController.getLevel(), world.width/2 - widthOfString/2, world.height/2 - 35);

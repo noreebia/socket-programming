@@ -77,7 +77,9 @@ public class BulletSystem {
 	
 	public void displayBullets() {
 		for(Bullet b: bullets) {
-			world.ellipse(b.getX(), b.getY(), b.size, b.size);
+			world.stroke(b.getRGB(0),b.getRGB(1), b.getRGB(2));
+			world.fill(b.getRGB(0), b.getRGB(1), b.getRGB(2));
+			world.ellipse(b.getX(), b.getY(), 2 * b.size, 2 * b.size);
 		}
 	}
 	

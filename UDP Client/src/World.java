@@ -100,11 +100,11 @@ public class World extends PApplet {
 
 	public void setup() {
 		strokeWeight((float) 1.5);
-		stroke(0);
+		stroke(255);
 	}
 
 	public void draw() {
-		background(255);
+		background(0);
 		
 		user.run();
 		user.writeInfoInto(player);

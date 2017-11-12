@@ -39,10 +39,11 @@ public class User extends GameObject {
 		setDirection();
 		bulletSystem.run();
 		deactivateInvincibility();
-		display();
+		//display();
 	}
 
 	void display() {
+		world.stroke(rgb[0], rgb[1], rgb[2]);
 		world.pushMatrix();
 		world.translate(x, y);
 		setAngle();
@@ -199,5 +200,9 @@ public class User extends GameObject {
 
 	public short getBackupRGB(int i) {
 		return backupRGB[i];
+	}
+	
+	public double getAngle() {
+		return angle;
 	}
 }
