@@ -24,11 +24,11 @@ public class ParticleSystem {
 		int i;
 		for (i = 0; i < 8; i++) {
 			particles[i] = new Particle(world);
-			setVelocityOfParticle(i, particles[i]);
+			setVelocityOfParticle(particles[i], i);
 		}
 	}
 
-	public void setVelocityOfParticle(int direction, Particle particle) {
+	public void setVelocityOfParticle(Particle particle, int direction) {
 		switch (direction) {
 		case 0:
 			particle.setSpeedY(-particleStraightSpeed);
@@ -61,7 +61,7 @@ public class ParticleSystem {
 		}
 	}
 
-	public void explodeAtPoint(float x, float y, short r, short g, short b) {
+	public void activate(float x, float y, short r, short g, short b) {
 		if (!isActive()) {
 			pointOfExplosionX = x;
 			pointOfExplosionY = y;
@@ -72,7 +72,7 @@ public class ParticleSystem {
 				p.activate(x, y);
 			}
 		}
-		this.activate();
+		this.active = true;
 	}
 
 	public void run() {
@@ -109,10 +109,6 @@ public class ParticleSystem {
 
 	public boolean isActive() {
 		return active;
-	}
-
-	public void activate() {
-		active = true;
 	}
 
 	public void deactivate() {

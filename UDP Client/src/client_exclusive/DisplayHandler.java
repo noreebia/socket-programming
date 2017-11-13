@@ -16,7 +16,6 @@ public class DisplayHandler {
 	int numberOfParticleSystems = 15;
 	ParticleSystem particleSystems[] = new ParticleSystem[numberOfParticleSystems];
 	
-	//boolean levelChanged;
 	long timeOfLevelChange;
 	int durationOfLevelChangeDisplay = 1000;
 	int aliveEnemies;
@@ -35,23 +34,26 @@ public class DisplayHandler {
 	}
 
 	public void run() {
-		displayUser();
-		runParticleSystems();
+		drawUser();
 		drawPlayersAndBullets();
 		drawEnemies();
-
-		int i;
-		for (i = 0; i < dataController.getExplosions().size(); i++) {
-			createExplosion(dataController.getExplosions().get(i).getX(), dataController.getExplosions().get(i).getY(),
-					dataController.getExplosions().get(i).getRGB(0), dataController.getExplosions().get(i).getRGB(1),
-					dataController.getExplosions().get(i).getRGB(2));
-			dataController.getExplosions().remove(i);
-		}
+		drawExplosions();
+		runParticleSystems();
 		displayGameStats();
 		displayLevelChange();
 	}
 	
-	public void displayUser() {
+	public void drawExplosions() {
+		int i;
+		for (i = 0; i < dataController.getExplosions().size(); i++) {
+			createExplosion(dataController.getExplosions().get(i).getX(), dataController.getExplosions().get(i).getY(), 
+					dataController.getExplosions().get(i).getRGB(0), dataController.getExplosions().get(i).getRGB(1),
+					dataController.getExplosions().get(i).getRGB(2));
+			dataController.getExplosions().remove(i);
+		}
+	}
+	
+	public void drawUser() {
 		world.pushMatrix();
 		world.translate(user.getX(), user.getY());
 		user.setAngle();
@@ -133,7 +135,7 @@ public class DisplayHandler {
 	public void createExplosion(float x, float y, short r, short g, short b) {
 		for (ParticleSystem p : particleSystems) {
 			if (!p.isActive()) {
-				p.explodeAtPoint(x, y, r, g, b);
+				p.activate(x, y, r, g, b);
 				return;
 			}
 		}
@@ -147,9 +149,10 @@ public class DisplayHandler {
 	public void displayGameStats() {
 		world.fill(255);
 		world.textSize(26);
+		/* display level */
 		float widthOfString = world.textWidth("LEVEL " + dataController.getLevel());
 		world.text("LEVEL " + dataController.getLevel(), world.width/2 - widthOfString/2, 30);
-		
+		/* display number of enemies left alive */
 		widthOfString = world.textWidth("ENEMIES LEFT: " + aliveEnemies);
 		world.text("ENEMIES LEFT: " + aliveEnemies, world.width - (widthOfString + textOffset), 30);
 	}
