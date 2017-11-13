@@ -1,11 +1,11 @@
 package client_exclusive;
 
+import model.GameObject;
 import processing.core.PApplet;
 
-public class Particle {
+public class Particle extends GameObject{
 	PApplet world;
 
-	float x, y;
 	float initialX, initialY;
 	float speedX = 0;
 	float speedY = 0;
@@ -13,10 +13,9 @@ public class Particle {
 	float size = (float) 1.5;
 	int deactivationRange = 300;
 	
-	
 	float straightSpeed = 10;
 	float diagonalSpeed = straightSpeed / world.sqrt(2);
-
+	
 	boolean active = false;
 	
 	public Particle(PApplet world) {
@@ -28,8 +27,8 @@ public class Particle {
 			setSpeed();
 			this.x = x;
 			this.y = y;
-			initialX = x;
-			initialY = y;
+			//initialX = x;
+			//initialY = y;
 			activate();
 		}
 	}
@@ -38,7 +37,7 @@ public class Particle {
 		if (isActive()) {
 			move();
 			display();
-			determineDeactivation();
+			//determineDeactivation();
 		}
 	}
 

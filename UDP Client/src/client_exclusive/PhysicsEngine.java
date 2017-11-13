@@ -48,7 +48,6 @@ public class PhysicsEngine {
 	public double getDistance(GameObject a, GameObject b) {
 		float xDistance = a.getX() - b.getX();
 		float yDistance = a.getY() - b.getY();
-
 		return Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
 	}
 
