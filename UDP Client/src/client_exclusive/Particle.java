@@ -10,8 +10,11 @@ public class Particle {
 	float speedX = 0;
 	float speedY = 0;
 	int direction;
-	int activationRange = 50;
-	float straightSpeed = 5;
+	float size = (float) 1.5;
+	int deactivationRange = 300;
+	
+	
+	float straightSpeed = 10;
 	float diagonalSpeed = straightSpeed / world.sqrt(2);
 
 	boolean active = false;
@@ -49,7 +52,7 @@ public class Particle {
 		float distX = x - initialX;
 		float distY = y - initialY;
 
-		if (world.sqrt(distX * distX + distY * distY) >= activationRange) {
+		if (world.sqrt(distX * distX + distY * distY) >= deactivationRange) {
 			return true;
 		} else {
 			return false;
@@ -95,7 +98,7 @@ public class Particle {
 	}
 
 	public void display() {
-		world.ellipse(x, y, 4, 4);
+		world.ellipse(x, y, size * 2, size * 2);
 	}
 
 	boolean isActive() {

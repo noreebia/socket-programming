@@ -132,6 +132,7 @@ public class World extends PApplet {
 			user.shouldFace(3, true);
 		}
 		if (key == 'w') {
+			
 			user.shouldMove(0, true);
 		}
 		if (key == 'a') {

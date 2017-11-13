@@ -1,30 +1,30 @@
 package client_exclusive;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import model.*;
 import processing.core.PApplet;
 
 public class User extends GameObject {
+	
 	PApplet world;
-	float speed = 3;
+	
+	public BulletSystem bulletSystem;
 	public short directionModifier = 0;
+
 	double angle;
+	
+	boolean invincible;
 	boolean[] moving = new boolean[4];
 	boolean[] facing = new boolean[4];
 
-	float originalSpeed = 5;
-	float diagonalSpeed = (float) (originalSpeed / Math.sqrt(2));
+	float speed ;
+	float straightSpeed = 5;
+	float diagonalSpeed = (float) (straightSpeed / Math.sqrt(2));
 
-	public BulletSystem bulletSystem;
-
-	boolean invincible;
 	long timeOfHit;
 	int colorFlashCount;
 	short[] backupRGB;
-
-	Random rand = new Random();
 
 	public User(PApplet world) {
 		this.world = world;
@@ -71,7 +71,7 @@ public class User extends GameObject {
 		if (count >= 2) {
 			setSpeed(diagonalSpeed);
 		} else {
-			setSpeed(originalSpeed);
+			setSpeed(straightSpeed);
 		}
 	}
 

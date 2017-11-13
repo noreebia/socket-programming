@@ -19,6 +19,8 @@ public class DisplayHandler {
 	//boolean levelChanged;
 	long timeOfLevelChange;
 	int durationOfLevelChangeDisplay = 1000;
+	int aliveEnemies;
+	int textOffset = 100;
 
 	public DisplayHandler(PApplet world, short connectionID, DataController dataController, User user) {
 		this.world = world;
@@ -50,12 +52,11 @@ public class DisplayHandler {
 	}
 	
 	public void displayUser() {
-		world.stroke(user.getRGB(0), user.getRGB(1), user.getRGB(2));
 		world.pushMatrix();
 		world.translate(user.getX(), user.getY());
 		user.setAngle();
 		world.rotate((float)  user.getAngle());
-		world.fill(user.getRGB(0), user.getRGB(1), user.getRGB(2));
+		setStrokeAndFillOf(user);
 		// world.ellipse(0, 0, size * 2, size * 2);
 		world.beginShape();
 		world.vertex(0, -user.getSize()- 5);
@@ -65,7 +66,6 @@ public class DisplayHandler {
 		world.endShape(world.CLOSE);
 		// bulletSystem.display();
 		world.popMatrix();
-
 	}
 
 	public void runParticleSystems() {
@@ -100,31 +100,33 @@ public class DisplayHandler {
 	}
 
 	public void drawPlayer(Player player) {
-		world.stroke(player.getRGB(0), player.getRGB(1), player.getRGB(2));
 		world.pushMatrix();
 		world.translate(player.getX(), player.getY());
 		world.rotate(world.PI / 4 * player.getDirection());
-		world.fill(player.getRGB(0), player.getRGB(1), player.getRGB(2));
+		setStrokeAndFillOf(player);
 		world.ellipse(0, 0, player.size * 2, player.size * 2);
 		world.rect(-2, -player.size, 4, -9);
 		world.popMatrix();
 	}
 
 	public void drawBullet(Bullet bullet) {
-		world.stroke(bullet.getRGB(0), bullet.getRGB(1), bullet.getRGB(2));
-		world.fill(bullet.getRGB(0), bullet.getRGB(1), bullet.getRGB(2));
+		setStrokeAndFillOf(bullet);
 		world.ellipse(bullet.getX(), bullet.getY(), 2 * bullet.getSize(), 2 * bullet.getSize());
 	}
 
 	public void drawEnemies() {
+		int count = 0;
 		for (GameObject e : dataController.getEnemies()) {
-			drawEnemy(e);
+			if(e.getX() > -500 || e.getY() > -500) {
+				drawEnemy(e);
+				count++;
+			}
 		}
+		aliveEnemies = count;
 	}
 
 	public void drawEnemy(GameObject enemy) {
-		world.stroke(enemy.getRGB(0), enemy.getRGB(1), enemy.getRGB(2));
-		world.fill(enemy.getRGB(0), enemy.getRGB(1), enemy.getRGB(2));
+		setStrokeAndFillOf(enemy);
 		world.ellipse(enemy.getX(), enemy.getY(), 2 * enemy.getSize(), 2 * enemy.getSize());
 	}
 
@@ -137,40 +139,31 @@ public class DisplayHandler {
 		}
 	}
 	
+	public void setStrokeAndFillOf(GameObject gameObject) {
+		world.stroke(gameObject.getRGB(0), gameObject.getRGB(1),gameObject.getRGB(2));
+		world.fill(gameObject.getRGB(0),gameObject.getRGB(1),gameObject.getRGB(2));
+	}
+	
 	public void displayGameStats() {
 		world.fill(255);
 		world.textSize(26);
-		float widthOfString = world.textWidth("Level " + dataController.getLevel());
-		world.text("Level " + dataController.getLevel(), world.width/2 - widthOfString/2, 30);
+		float widthOfString = world.textWidth("LEVEL " + dataController.getLevel());
+		world.text("LEVEL " + dataController.getLevel(), world.width/2 - widthOfString/2, 30);
+		
+		widthOfString = world.textWidth("ENEMIES LEFT: " + aliveEnemies);
+		world.text("ENEMIES LEFT: " + aliveEnemies, world.width - (widthOfString + textOffset), 30);
 	}
 	
 	public void displayLevelChange() {
 		if(dataController.hasLevelChanged()) {		
 			dataController.setLevelChanged(false);
 			timeOfLevelChange = System.currentTimeMillis();
-			
-			/*
-			if(System.currentTimeMillis() - timeOfLevelChange >= durationOfLevelChangeDisplay) {
-				dataController.setLevelChanged(false);
-			}
-			*/
 		}
 		else if(System.currentTimeMillis() - timeOfLevelChange <= durationOfLevelChangeDisplay){
 			world.fill(255);
 			world.textSize(70);
-			float widthOfString = world.textWidth("Level " + dataController.getLevel());
-			world.text("Level "+ dataController.getLevel(), world.width/2 - widthOfString/2, world.height/2 - 35);
+			float widthOfString = world.textWidth("LEVEL " + dataController.getLevel());
+			world.text("LEVEL "+ dataController.getLevel(), world.width/2 - widthOfString/2, world.height/2 - 35);
 		}
 	}
-	
-	/*
-	public void setLevelChanged(boolean levelChanged) {
-		this.levelChanged = levelChanged;
-		timeOfLevelChange = System.currentTimeMillis();
-	}
-	
-	public boolean hasLevelChanged() {
-		return levelChanged;
-	}
-	*/
 }
