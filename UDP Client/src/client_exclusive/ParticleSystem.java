@@ -9,83 +9,98 @@ public class ParticleSystem {
 	Particle particles[] = new Particle[8];
 
 	boolean active = false;
-	short r,g,b;
-	
-	float xExplosionPoint;
-	float yExplosionPoint;
-	
+	short r, g, b;
+
+	float pointOfExplosionX;
+	float pointOfExplosionY;
+
 	float deactivationRange = 300;
-	
+
+	float particleStraightSpeed = 10;
+	float particleDiagonalSpeed = (float) (particleStraightSpeed / Math.sqrt(2));
+
 	public ParticleSystem(PApplet world) {
 		this.world = world;
 		int i;
 		for (i = 0; i < 8; i++) {
 			particles[i] = new Particle(world);
-			particles[i].setDirection(i);
+			setVelocityOfParticle(i, particles[i]);
+		}
+	}
+
+	public void setVelocityOfParticle(int direction, Particle particle) {
+		switch (direction) {
+		case 0:
+			particle.setSpeedY(-particleStraightSpeed);
+			break;
+		case 1:
+			particle.setSpeedX(particleDiagonalSpeed);
+			particle.setSpeedY(-particleDiagonalSpeed);
+			break;
+		case 2:
+			particle.setSpeedX(particleStraightSpeed);
+			break;
+		case 3:
+			particle.setSpeedX(particleDiagonalSpeed);
+			particle.setSpeedY(particleDiagonalSpeed);
+			break;
+		case 4:
+			particle.setSpeedY(particleDiagonalSpeed);
+			break;
+		case 5:
+			particle.setSpeedX(-particleDiagonalSpeed);
+			particle.setSpeedY(particleDiagonalSpeed);
+			break;
+		case 6:
+			particle.setSpeedX(-particleStraightSpeed);
+			break;
+		case 7:
+			particle.setSpeedX(-particleDiagonalSpeed);
+			particle.setSpeedY(-particleDiagonalSpeed);
+			break;
 		}
 	}
 
 	public void explodeAtPoint(float x, float y, short r, short g, short b) {
 		if (!isActive()) {
-			xExplosionPoint = x;
-			yExplosionPoint = y;
+			pointOfExplosionX = x;
+			pointOfExplosionY = y;
 			this.r = r;
 			this.g = g;
-			this.b =b;
+			this.b = b;
 			for (Particle p : particles) {
-				p.explode(x, y);
+				p.activate(x, y);
 			}
 		}
 		this.activate();
 	}
-	
+
 	public void run() {
 		if (isActive()) {
-			world.stroke(r,g,b);
-			world.fill(r,g,b);
 			boolean isEveryParticleDeactivated = true;
-			for (Particle p : particles) {				
-				if(!isParticleOutOfRange(p)) {
+			world.stroke(r, g, b);
+			world.fill(r, g, b);
+			for (Particle p : particles) {
+				if (!isParticleOutOfRange(p)) {
 					p.run();
-					if(isEveryParticleDeactivated) {
-						isEveryParticleDeactivated = false;
-					}
-				}
-				else {
+					isEveryParticleDeactivated = false;
+				} else {
 					p.deactivate();
 				}
-				
-				//p.run();
 			}
-			if(isEveryParticleDeactivated) {
+			if (isEveryParticleDeactivated) {
 				this.deactivate();
 			}
-			//determineDeactivation();
 		}
 	}
 
-	public void determineDeactivation() {
-		if (shouldDeactivate()) {
-			deactivate();
-		}
-	}
-	
-	public boolean shouldDeactivate() {
-		for (Particle p : particles) {
-			if (p.isActive()) {
-				return false;
-			}
-		}
-		return true;
-	}
-	
 	public boolean isParticleOutOfRange(Particle p) {
-		if(getDistance(p.getX(), p.getY(), xExplosionPoint, yExplosionPoint) > deactivationRange) {
+		if (getDistance(p.getX(), p.getY(), pointOfExplosionX, pointOfExplosionY) > deactivationRange) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	public double getDistance(float x1, float y1, float x2, float y2) {
 		float xDistance = x2 - x1;
 		float yDistance = y2 - y1;
