@@ -118,13 +118,10 @@ public class User extends GameObject {
 				setDirectionModifier((short) 1);
 			} else if (isFacing(2) && isFacing(3)) {
 				setDirectionModifier((short) 3);
-				this.speed = diagonalSpeed;
 			} else if (isFacing(2) && isFacing(1)) {
 				setDirectionModifier((short) 5);
-				this.speed = diagonalSpeed;
 			} else if (isFacing(0) && isFacing(1)) {
 				setDirectionModifier((short) 7);
-				this.speed = diagonalSpeed;
 			}
 		} else {
 			if (isFacing(0)) {
