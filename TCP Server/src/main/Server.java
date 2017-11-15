@@ -5,42 +5,25 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server {
-	
-
 	ServerSocket serverSocket;
-	Socket socket;
-	BufferedReader reader;
-	PrintWriter writer;
+		
+	BufferedReader input;
+	PrintWriter output;
 	
-	public Server() {
-		try {
-			serverSocket = new ServerSocket(40000);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		System.out.println("listening...");
-		try {
-			socket = serverSocket.accept();
-			new Thread(new ClientHandlingThread(socket)).start();
-			//inputStream = new DataInputStream(socket.getInputStream());
-			//outputStream = new DataOutputStream(socket.getOutputStream());
-			
-			//writer = new PrintWriter(socket.getOutputStream());
-			//reader = new BufferedReader(new InputStreamReader(socket.getInputStream()) );
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		System.out.println("about to read message from client");
-		/*
+	public Server() throws IOException {
+		serverSocket = new ServerSocket(40000);
 		while(true) {
-			try {
-				System.out.println(reader.readLine());
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.exit(1);
-			}
+			Socket socket = serverSocket.accept();
+			new Thread(new ClientHandler(socket)).start();
 		}
-		*/
+		
+		/*
+		input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		output = new PrintWriter(socket.getOutputStream(), true);
+		
+		String message = input.readLine();
+		System.out.println(message);
+		output.println(message + ":) <- added from server");
+		*/ 
 	}
 }
