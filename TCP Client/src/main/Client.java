@@ -28,10 +28,10 @@ public class Client {
 		int count = 0;
 		while(true) {
 			try{
-				System.out.println("writing to server...");			
 				count++;
 				//outputStream.writeInt(count);
 				writer.println(count);
+				System.out.println("sent " + count + " to server");	
 			}catch(Exception e){
 				e.printStackTrace();
 				System.exit(1);

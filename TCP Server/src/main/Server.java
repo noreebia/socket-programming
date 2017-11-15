@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server {
+	
 
 	ServerSocket serverSocket;
 	Socket socket;
@@ -21,14 +22,17 @@ public class Server {
 		System.out.println("listening...");
 		try {
 			socket = serverSocket.accept();
+			new Thread(new ClientHandlingThread(socket)).start();
 			//inputStream = new DataInputStream(socket.getInputStream());
 			//outputStream = new DataOutputStream(socket.getOutputStream());
-			writer = new PrintWriter(socket.getOutputStream());
-			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()) );
+			
+			//writer = new PrintWriter(socket.getOutputStream());
+			//reader = new BufferedReader(new InputStreamReader(socket.getInputStream()) );
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		System.out.println("about to read message from client");
+		/*
 		while(true) {
 			try {
 				System.out.println(reader.readLine());
@@ -37,5 +41,6 @@ public class Server {
 				System.exit(1);
 			}
 		}
+		*/
 	}
 }
