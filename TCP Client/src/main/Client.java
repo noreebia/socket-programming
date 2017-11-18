@@ -18,14 +18,20 @@ public class Client {
 		output = new PrintWriter(socket.getOutputStream(), true);
 
 		while (true) {
-			System.out.print("Enter message: ");
-			String userInput = scanner.nextLine();
-			if (userInput.equals("/quit")) {
-				break;
+			try{
+				System.out.print("Enter message: ");
+				String userInput = scanner.nextLine();
+				if (userInput.equals("/quit")) {
+					break;
+				}
+				output.println(userInput);
+				String message = input.readLine();
+				System.out.println("From Server: " + message);
+
+			}catch(SocketException e) {
+				e.printStackTrace();
+				System.exit(1);
 			}
-			output.println(userInput);
-			String message = input.readLine();
-			System.out.println("From Server: " + message);
 		}
 		socket.close();
 	}

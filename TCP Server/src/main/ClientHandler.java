@@ -23,6 +23,7 @@ public class ClientHandler implements Runnable{
 		String message;
 		while(true) {
 			try {
+				System.out.println("listening for client input...");
 				message = input.readLine();
 				System.out.println("From client: " + message);
 				output.println(message + " <- echo from server");
