@@ -21,6 +21,9 @@ public class Server {
 		while(true) {
 			System.out.println("Listening for clients...");
 			Socket socket = serverSocket.accept();
+			new Thread(new ClientHandler(socket)).start();
+
+			/*
 			input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			output = new PrintWriter(socket.getOutputStream(), true);
 			
@@ -37,6 +40,7 @@ public class Server {
 			}
 			
 			System.out.println("current connected clients: " + clients.size());
+			*/
 			//new Thread(new ClientHandler(socket)).start();
 		}
 		
