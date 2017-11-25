@@ -17,12 +17,12 @@ public class EnemySystem {
 
 	float speed = 1;
 	int offset = 150;
-	
+
 	int screenWidth = 1200;
 	int screenHeight = 800;
-	
+
 	int enemySpawnLocationWidth = 150;
-	
+
 	boolean everyEnemyDead;
 
 	Random rand = new Random();
@@ -30,7 +30,7 @@ public class EnemySystem {
 	public EnemySystem(DataController dataController) {
 		this.dataController = dataController;
 	}
-	
+
 	public void increaseLevel() {
 		dataController.increaseLevel();
 		resetEnemies(dataController.getLevel() * (10 + dataController.getPlayers().size()));
@@ -46,18 +46,20 @@ public class EnemySystem {
 		float spawnPointY = 0;
 		for (i = 0; i < numOfEnemies; i++) {
 			int spawnDirection = rand.nextInt(4) + 1;
-			switch(spawnDirection) {
+			switch (spawnDirection) {
 			case 1:
 				spawnPointX = rand.nextInt(screenWidth) + 1;
 				spawnPointY = rand.nextInt(enemySpawnLocationWidth) + 1;
 				break;
 			case 2:
-				spawnPointX = rand.nextInt(screenWidth - (screenWidth - enemySpawnLocationWidth) + 1) + (screenWidth - enemySpawnLocationWidth);
+				spawnPointX = rand.nextInt(screenWidth - (screenWidth - enemySpawnLocationWidth) + 1)
+						+ (screenWidth - enemySpawnLocationWidth);
 				spawnPointY = rand.nextInt(screenHeight) + 1;
 				break;
 			case 3:
 				spawnPointX = rand.nextInt(screenWidth) + 1;
-				spawnPointY = rand.nextInt(screenHeight - (screenHeight - enemySpawnLocationWidth) +1) + (screenHeight - enemySpawnLocationWidth);
+				spawnPointY = rand.nextInt(screenHeight - (screenHeight - enemySpawnLocationWidth) + 1)
+						+ (screenHeight - enemySpawnLocationWidth);
 				break;
 			case 4:
 				spawnPointX = rand.nextInt(enemySpawnLocationWidth) + 1;
@@ -67,7 +69,9 @@ public class EnemySystem {
 			originals.add(new Enemy(spawnPointX, spawnPointY));
 
 			shadows.add(new GameObject(spawnPointX, spawnPointY));
-			shadows.get(i).setRGB((short) (rand.nextInt(255) + 1), (short) (rand.nextInt(255) + 1), (short) (rand.nextInt(255) + 1));
+			// shadows.get(i).setRGB((short) (rand.nextInt(255) + 1), (short)
+			// (rand.nextInt(255) + 1), (short) (rand.nextInt(255) + 1));
+			changeShadowColor(i);
 		}
 	}
 
@@ -87,16 +91,16 @@ public class EnemySystem {
 				}
 			}
 			updateShadows();
-			if(isEveryEnemyDead()) {
+			if (isEveryEnemyDead()) {
 				increaseLevel();
 			}
 		}
 	}
-	
+
 	public void setRandomPointAsTarget(Enemy e) {
 		int randomX = rand.nextInt(screenWidth) + 1;
 		int randomY = rand.nextInt(screenHeight) + 1;
-		
+
 		e.setDestination(randomX, randomY);
 	}
 
@@ -110,19 +114,43 @@ public class EnemySystem {
 		if (originals.size() == shadows.size()) {
 			int i;
 			for (i = 0; i < originals.size(); i++) {
-				if(originals.get(i).isActive()) {
+				if (originals.get(i).isActive()) {
 					shadows.get(i).setX(originals.get(i).getX());
 					shadows.get(i).setY(originals.get(i).getY());
-					if(isEveryEnemyDead()) {
+					if (isEveryEnemyDead()) {
 						everyEnemyDead = false;
 					}
-				}				
+				}
 			}
 		}
 	}
-	
+
 	public void changeShadowColor(int i) {
 		shadows.get(i).setRGB((short)(rand.nextInt(255) + 1), (short)(rand.nextInt(255) + 1), (short)(rand.nextInt(255) + 1));
+
+		/*
+		int r = rand.nextInt(256);
+		int g = rand.nextInt(256);
+		int b = rand.nextInt(256);
+
+		int minimumLuminance = 150;
+		
+		while ( ((2 * r + b + 3 * g) / 6) < minimumLuminance) {
+			r = (int) (r * 1.2);
+			if (r > 255) {
+				r = 255;
+			}
+			g = (int) (g * 1.2);
+			if (g > 255) {
+				g = 255;
+			}
+			b = (int) (b * 1.2);
+			if (b > 255) {
+				b = 255;
+			}
+		}
+		shadows.get(i).setRGB((short) r, (short) g, (short) b);
+		*/
 	}
 
 	public void moveEnemiesTowardsDestination() {
@@ -163,7 +191,7 @@ public class EnemySystem {
 	public ArrayList<Enemy> getOriginals() {
 		return originals;
 	}
-	
+
 	public boolean isEveryEnemyDead() {
 		return everyEnemyDead;
 	}

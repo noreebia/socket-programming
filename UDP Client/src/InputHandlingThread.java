@@ -6,7 +6,6 @@ import java.io.ObjectInputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
-import client_exclusive.User;
 import control.DataController;
 import model.Data;
 import model.Player;
@@ -25,14 +24,12 @@ public class InputHandlingThread implements Runnable {
 	DataController dataController;
 
 	short connectionID;
-	User user;
 
-	public InputHandlingThread(DatagramSocket socket, DataController dataController, short connectionID, User user) {
+	public InputHandlingThread(DatagramSocket socket, DataController dataController, short connectionID) {
 		System.out.println("Input handler created.");
 		this.socket = socket;
 		this.dataController = dataController;
 		this.connectionID = connectionID;
-		this.user = user;
 	}
 
 	public void run() {
